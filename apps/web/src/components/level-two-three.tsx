@@ -63,6 +63,7 @@ export function HostLevelTwo({
     <PageShell title="Đuổi Hình Bắt Chữ" subtitle={`Chặng 02 · Lượt ${level.currentRound}/2`}>
       <section className="host-board-grid level-two-reveal-host">
         <header className="level-two-scorebar"><span>LƯỢT {level.currentRound} / 2</span><strong>{level.currentReward} ĐIỂM</strong><small>{level.guessedTeamIds.length}/{snapshot.teamCount} đội đã đoán</small></header>
+        {challenge && <p className="host-keyword-hint"><span>GỢI Ý</span>{challenge.hint}</p>}
         <div className={`image-reveal-board${completed ? " is-complete" : ""}`} aria-label={`Ảnh đuổi hình bắt chữ lượt ${level.currentRound}`}>
           {challenge && <img alt={`Ảnh bí mật lượt ${level.currentRound}`} src={challenge.image} />}
           <div className={`reveal-tile-grid${level.currentRound === 2 ? " reveal-tile-grid--vertical" : ""}`}>
