@@ -1,0 +1,11 @@
+{
+  "id": "level-07-round-03",
+  "type": "picture_word",
+  "prompt": "Nhìn hình và đoán cụm từ.",
+  "imageUrls": ["/level-07/cocauxahoi.png"],
+  "answer": "CƠ CẤU XÃ HỘI",
+  "aliases": [],
+  "explanation": "",
+  "points": 30,
+  "demo": true
+}

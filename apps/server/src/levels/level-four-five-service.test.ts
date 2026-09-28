@@ -39,13 +39,13 @@ describe("Level 4 authoritative matching", () => {
   it("awards 25 for a fully correct match and hides the solution", async () => {
     const { service, room } = await startFour(["nam"]);
     expect(toLobbySnapshot(room).levelFour?.currentChallenge).not.toHaveProperty("solution");
-    const updated = await service.submitLevelFourAnswer(room.roomCode, room.teams[0]!.sessionToken, LEVEL_FOUR_CHALLENGES[0]!.id, LEVEL_FOUR_CHALLENGES[0]!.solution, 6_000);
+    const updated = await service.submitLevelFourAnswer(room.roomCode, room.teams[0]!.sessionToken, LEVEL_FOUR_CHALLENGES[0].id, LEVEL_FOUR_CHALLENGES[0].solution, 6_000);
     expect(updated.levelFour?.baseScores[room.teams[0]!.teamId]).toBe(25);
   });
 
   it("awards 0 for an incorrect complete matching", async () => {
     const { service, room } = await startFour(["nam"]);
-    const updated = await service.submitLevelFourAnswer(room.roomCode, room.teams[0]!.sessionToken, LEVEL_FOUR_CHALLENGES[0]!.id, { matches: [{ leftId: "l1", rightId: "r1" }, { leftId: "l2", rightId: "r2" }, { leftId: "l3", rightId: "r3" }] }, 6_000);
+    const updated = await service.submitLevelFourAnswer(room.roomCode, room.teams[0]!.sessionToken, LEVEL_FOUR_CHALLENGES[0].id, { matches: [{ leftId: "l1", rightId: "r2" }, { leftId: "l2", rightId: "r1" }, { leftId: "l3", rightId: "r3" }] }, 6_000);
     expect(updated.levelFour?.baseScores[room.teams[0]!.teamId]).toBe(0);
   });
 

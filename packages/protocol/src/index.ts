@@ -146,6 +146,12 @@ export interface LevelTwoChallengePublic {
 
 export type LevelResultPublic = LevelOneResultPublic;
 
+export interface LevelFiveResultPublic extends LevelOneResultPublic {
+  completionTimeMs: number;
+  finishRank: number;
+  finishBonus: number;
+}
+
 export interface LevelTwoPublicState {
   phase: LevelTwoPhase;
   currentRound: 1 | 2;
@@ -160,15 +166,38 @@ export interface LevelTwoPublicState {
   guessedTeamIds: TeamId[];
   cooldownUntilByTeam: Record<TeamId, number>;
   reveal: null | { keyword: string; winnerTeamId: TeamId | null; winnerTeamName: string | null };
-  roundResults: Array<{ round: 1 | 2; winnerTeamId: TeamId; winnerTeamName: string; baseReward: number; multiplier: 1 | 2; awardedScore: number }>;
+  roundResults: Array<{
+    round: 1 | 2;
+    winnerTeamId: TeamId;
+    winnerTeamName: string;
+    baseReward: number;
+    multiplier: 1 | 2;
+    awardedScore: number;
+  }>;
   results: LevelResultPublic[] | null;
   pieceAwarded: boolean;
 }
 
 export type LevelThreePhase = "intro" | "round_active" | "round_reveal" | "level_result";
 export type LevelThreeRoundPublic =
-  | { id: string; type: "parking"; prompt: string; parkingSpaces: string[]; inputMode: "numeric"; points: 50; demo: true }
-  | { id: string; type: "story"; prompt: string; storyParagraphs: string[]; inputMode: "text"; points: 50; demo: true };
+  | {
+      id: string;
+      type: "parking";
+      prompt: string;
+      parkingSpaces: string[];
+      inputMode: "numeric";
+      points: 50;
+      demo: true;
+    }
+  | {
+      id: string;
+      type: "story";
+      prompt: string;
+      storyParagraphs: string[];
+      inputMode: "text";
+      points: 50;
+      demo: true;
+    };
 
 export interface LevelThreePublicState {
   phase: LevelThreePhase;
@@ -205,7 +234,11 @@ export interface LevelFourPublicState {
   deadlineAt: number | null;
   currentChallenge: LevelFourChallengePublic | null;
   submittedTeamIds: TeamId[];
-  reveal: null | { solution: LevelFourSubmission; explanation: string; feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }> };
+  reveal: null | {
+    solution: LevelFourSubmission;
+    explanation: string;
+    feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }>;
+  };
   results: LevelResultPublic[] | null;
   pieceAwarded: boolean;
 }
@@ -218,24 +251,32 @@ export interface LevelFiveQuestionPublic {
   points: 20;
   demo: true;
 }
-export type LevelFiveTeamMode = "platforming" | "question" | "retry_cooldown" | "final_platforming" | "finished";
+export type LevelFiveTeamMode =
+  "platforming" | "question" | "retry_cooldown" | "final_platforming" | "finished";
 export interface LevelFiveTeamProgressPublic {
   checkpointProgress: 0 | 1 | 2 | 3 | 4 | 5;
   mode: LevelFiveTeamMode;
   activeQuestionIndex: number | null;
   retryAvailableAt: number | null;
   finishedAt: number | null;
+  completionTimeMs: number | null;
+  finishRank: number | null;
+  finishBonus: number;
+  knowledgeScore: number | null;
+  knowledgeMultiplier: 1 | 2 | null;
+  finalScore: number | null;
   lastAnswerCorrect: boolean | null;
 }
 export interface LevelFivePublicState {
   phase: "intro" | "running" | "level_result";
   totalQuestions: 5;
   phaseStartedAt: number;
+  levelStartedAt: number | null;
   deadlineAt: number | null;
   teamProgress: Record<TeamId, LevelFiveTeamProgressPublic>;
   currentQuestions: Record<TeamId, LevelFiveQuestionPublic | null>;
   progress: Record<TeamId, number>;
-  results: LevelResultPublic[] | null;
+  results: LevelFiveResultPublic[] | null;
   pieceAwarded: boolean;
 }
 
@@ -243,26 +284,73 @@ export type LevelSixSubmission =
   | { type: "singleChoice" | "classification"; optionId: string }
   | { type: "ordering"; order: readonly string[] };
 export type LevelSixChallengePublic =
-  | { id: string; station: 1 | 4; type: "singleChoice"; prompt: string; options: Array<{ id: string; text: string }>; points: 25; demo: true }
-  | { id: string; station: 2; type: "classification"; prompt: string; options: Array<{ id: string; text: string }>; points: 25; demo: true }
-  | { id: string; station: 3; type: "ordering"; prompt: string; items: Array<{ id: string; text: string }>; points: 25; demo: true };
+  | {
+      id: string;
+      station: 1 | 4;
+      type: "singleChoice";
+      prompt: string;
+      options: Array<{ id: string; text: string }>;
+      points: 25;
+      demo: true;
+    }
+  | {
+      id: string;
+      station: 2;
+      type: "classification";
+      prompt: string;
+      options: Array<{ id: string; text: string }>;
+      points: 25;
+      demo: true;
+    }
+  | {
+      id: string;
+      station: 3;
+      type: "ordering";
+      prompt: string;
+      items: Array<{ id: string; text: string }>;
+      points: 25;
+      demo: true;
+    };
 export interface LevelSixPublicState {
   phase: "intro" | "station_active" | "station_reveal" | "level_result";
-  stationIndex: number; totalStations: 4; phaseStartedAt: number; deadlineAt: number | null;
-  currentChallenge: LevelSixChallengePublic | null; submittedTeamIds: TeamId[];
-  reveal: null | { solution: LevelSixSubmission; explanation: string; feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }> };
-  results: LevelResultPublic[] | null; pieceAwarded: boolean;
+  stationIndex: number;
+  totalStations: 4;
+  phaseStartedAt: number;
+  deadlineAt: number | null;
+  currentChallenge: LevelSixChallengePublic | null;
+  submittedTeamIds: TeamId[];
+  reveal: null | {
+    solution: LevelSixSubmission;
+    explanation: string;
+    feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }>;
+  };
+  results: LevelResultPublic[] | null;
+  pieceAwarded: boolean;
 }
 export interface LevelSevenRoundPublic {
-  id: string; type: "pictureWord"; prompt: string;
-  imageUrls: string[]; points: 25; demo: true;
+  id: string;
+  type: "pictureWord";
+  prompt: string;
+  imageUrls: string[];
+  answerPattern: string;
+  points: 30 | 40;
+  demo: true;
 }
 export interface LevelSevenPublicState {
   phase: "intro" | "round_active" | "round_reveal" | "level_result";
-  roundIndex: number; totalRounds: 4; phaseStartedAt: number; deadlineAt: number | null;
-  currentRound: LevelSevenRoundPublic | null; submittedTeamIds: TeamId[];
-  reveal: null | { answer: string; explanation: string; feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }> };
-  results: LevelResultPublic[] | null; pieceAwarded: boolean;
+  roundIndex: number;
+  totalRounds: 3;
+  phaseStartedAt: number;
+  deadlineAt: number | null;
+  currentRound: LevelSevenRoundPublic | null;
+  submittedTeamIds: TeamId[];
+  reveal: null | {
+    answer: string;
+    explanation: string;
+    feedback: Array<{ teamId: TeamId; correct: boolean; pointsAwarded: number }>;
+  };
+  results: LevelResultPublic[] | null;
+  pieceAwarded: boolean;
 }
 
 export interface LobbySnapshot {
@@ -310,9 +398,7 @@ export interface ProtocolErrorPayload {
   message: string;
 }
 
-export type Acknowledgement<T> =
-  | { ok: true; data: T }
-  | { ok: false; error: ProtocolErrorPayload };
+export type Acknowledgement<T> = { ok: true; data: T } | { ok: false; error: ProtocolErrorPayload };
 
 export interface HostRoomCredentials {
   roomCode: string;
@@ -330,7 +416,9 @@ export interface ClientToServerEvents {
   "system:ping": (payload: PingPayload, acknowledge: (payload: PongPayload) => void) => void;
   "host.room.create": (
     payload: Record<string, never>,
-    acknowledge: (result: Acknowledgement<HostRoomCredentials & { snapshot: LobbySnapshot }>) => void
+    acknowledge: (
+      result: Acknowledgement<HostRoomCredentials & { snapshot: LobbySnapshot }>
+    ) => void
   ) => void;
   "host.session.resume": (
     payload: HostRoomCredentials,
@@ -400,33 +488,85 @@ export interface ClientToServerEvents {
     payload: HostRoomCredentials,
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
-  "host.levelFour.start": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelFour.continue": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelFour.returnToMap": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelFive.start": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelFive.continue": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelFive.returnToMap": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSix.start": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSix.continue": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSix.returnToMap": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSeven.start": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSeven.continue": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.levelSeven.returnToMap": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.allianceCenter.enter": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.finalResults.reveal": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.finalResults.review": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "host.journey.complete": (payload: HostRoomCredentials, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
+  "host.levelFour.start": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFour.continue": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFour.returnToMap": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFive.start": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFive.continue": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFive.returnToMap": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSix.start": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSix.continue": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSix.returnToMap": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSeven.start": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSeven.continue": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelSeven.returnToMap": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.allianceCenter.enter": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.finalResults.reveal": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.finalResults.review": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.journey.complete": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
   "player.room.inspect": (
     payload: { roomCode: string },
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "player.room.join": (
     payload: { roomCode: string; teamName: string },
-    acknowledge: (result: Acknowledgement<{ session: PlayerSession; snapshot: LobbySnapshot }>) => void
+    acknowledge: (
+      result: Acknowledgement<{ session: PlayerSession; snapshot: LobbySnapshot }>
+    ) => void
   ) => void;
   "player.session.resume": (
     payload: { roomCode: string; sessionToken: string },
-    acknowledge: (result: Acknowledgement<{ session: PlayerSession; snapshot: LobbySnapshot }>) => void
+    acknowledge: (
+      result: Acknowledgement<{ session: PlayerSession; snapshot: LobbySnapshot }>
+    ) => void
   ) => void;
   "player.character.claim": (
     payload: { roomCode: string; sessionToken: string; characterId: CharacterId },
@@ -445,7 +585,12 @@ export interface ClientToServerEvents {
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "player.levelFour.answer": (
-    payload: { roomCode: string; sessionToken: string; challengeId: string; solution: LevelFourSubmission },
+    payload: {
+      roomCode: string;
+      sessionToken: string;
+      challengeId: string;
+      solution: LevelFourSubmission;
+    },
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "player.levelFive.answer": (
@@ -460,8 +605,19 @@ export interface ClientToServerEvents {
     payload: { roomCode: string; sessionToken: string },
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
-  "player.levelSix.answer": (payload: { roomCode: string; sessionToken: string; challengeId: string; solution: LevelSixSubmission }, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
-  "player.levelSeven.answer": (payload: { roomCode: string; sessionToken: string; roundId: string; answerText: string }, acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void) => void;
+  "player.levelSix.answer": (
+    payload: {
+      roomCode: string;
+      sessionToken: string;
+      challengeId: string;
+      solution: LevelSixSubmission;
+    },
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "player.levelSeven.answer": (
+    payload: { roomCode: string; sessionToken: string; roundId: string; answerText: string },
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
 }
 
 export interface ServerToClientEvents {
@@ -469,7 +625,11 @@ export interface ServerToClientEvents {
   "room.snapshot": (payload: LobbySnapshot) => void;
   "team.joined": (payload: { team: LobbyTeamPublic; snapshot: LobbySnapshot }) => void;
   "team.removed": (payload: { teamId: TeamId; snapshot: LobbySnapshot }) => void;
-  "team.connectionChanged": (payload: { teamId: TeamId; connected: boolean; snapshot: LobbySnapshot }) => void;
+  "team.connectionChanged": (payload: {
+    teamId: TeamId;
+    connected: boolean;
+    snapshot: LobbySnapshot;
+  }) => void;
   "lobby.locked": (payload: LobbySnapshot) => void;
   "lobby.unlocked": (payload: LobbySnapshot) => void;
   "protocol.error": (payload: ProtocolErrorPayload) => void;

@@ -39,7 +39,7 @@ async function startLevelTwo(characters: CharacterId[] = ["an"]) {
 }
 
 async function winRound(service: LobbyService, room: Awaited<ReturnType<LobbyService["createRoom"]>>, teamIndex: number, now: number) {
-  const challenge = LEVEL_TWO_CHALLENGES[room.levelTwo!.currentRoundIndex]!;
+  const challenge = LEVEL_TWO_CHALLENGES[room.levelTwo!.currentRoundIndex];
   return service.submitLevelTwoAnswer(room.roomCode, room.teams[teamIndex]!.sessionToken, challenge.id, challenge.keyword, now);
 }
 
@@ -74,7 +74,7 @@ describe("Level 2 two-round image reveal", () => {
 
   it("keeps an incorrect guess in the active round and applies cooldown", async () => {
     const { service, room } = await startLevelTwo();
-    const challenge = LEVEL_TWO_CHALLENGES[0]!;
+    const challenge = LEVEL_TWO_CHALLENGES[0];
     const updated = await service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, "sai rồi", 125_000);
     expect(updated.levelTwo?.phase).toBe("round_active");
     expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(0);
@@ -83,7 +83,7 @@ describe("Level 2 two-round image reveal", () => {
 
   it("lets the Host reveal the answer when nobody guesses correctly", async () => {
     const { service, room } = await startLevelTwo();
-    const challenge = LEVEL_TWO_CHALLENGES[0]!;
+    const challenge = LEVEL_TWO_CHALLENGES[0];
     const revealed = await service.revealLevelTwoAnswer(room.roomCode, room.hostToken, 125_000);
     expect(revealed.levelTwo).toMatchObject({ phase: "round_complete", roundWinnerTeamId: null, roundReward: 0 });
     expect(revealed.levelTwo?.roundResults).toHaveLength(0);
@@ -105,7 +105,7 @@ describe("Level 2 two-round image reveal", () => {
 
   it("accepts only one winner from simultaneous correct guesses", async () => {
     const { service, room } = await startLevelTwo(["an", "khoa"]);
-    const challenge = LEVEL_TWO_CHALLENGES[0]!;
+    const challenge = LEVEL_TWO_CHALLENGES[0];
     const attempts = await Promise.allSettled(room.teams.map((team) => service.submitLevelTwoAnswer(room.roomCode, team.sessionToken, challenge.id, challenge.keyword, 125_000)));
     expect(attempts.filter((attempt) => attempt.status === "fulfilled")).toHaveLength(1);
     const authoritative = await service.inspect(room.roomCode);
@@ -166,8 +166,8 @@ describe("Level 2 two-round image reveal", () => {
     const { room } = await startLevelTwo();
     const publicLevel = toLobbySnapshot(room).levelTwo;
     const serialized = JSON.stringify(publicLevel);
-    expect(publicLevel?.currentChallenge?.hint).toBe(LEVEL_TWO_CHALLENGES[0]!.hint);
-    expect(serialized).not.toContain(LEVEL_TWO_CHALLENGES[0]!.keyword);
+    expect(publicLevel?.currentChallenge?.hint).toBe(LEVEL_TWO_CHALLENGES[0].hint);
+    expect(serialized).not.toContain(LEVEL_TWO_CHALLENGES[0].keyword);
     expect(serialized).not.toContain("acceptedAnswers");
   });
 
@@ -175,8 +175,8 @@ describe("Level 2 two-round image reveal", () => {
     const { service, room } = await startLevelTwo();
     const won = await winRound(service, room, 0, 125_000);
     const serialized = JSON.stringify(toLobbySnapshot(won).levelTwo);
-    expect(serialized).toContain(LEVEL_TWO_CHALLENGES[0]!.keyword);
-    expect(serialized).not.toContain(LEVEL_TWO_CHALLENGES[1]!.keyword);
+    expect(serialized).toContain(LEVEL_TWO_CHALLENGES[0].keyword);
+    expect(serialized).not.toContain(LEVEL_TWO_CHALLENGES[1].keyword);
   });
 
   it("completes Level 2 only after Round 2 and Host confirmation", async () => {

@@ -37,7 +37,8 @@ function CreateRoomPage() {
     setCreating(true);
     setError(null);
     try {
-      const { snapshot: _snapshot, ...credentials } = await socketStore.createRoom();
+      const created = await socketStore.createRoom();
+      const credentials = { roomCode: created.roomCode, hostToken: created.hostToken };
       saveHostSession(credentials);
       void navigate(`/host/${credentials.roomCode}`);
     } catch (reason) {

@@ -4,15 +4,18 @@ import type { LobbySnapshot } from "@htlm/protocol";
 import { PageShell } from "./page-shell";
 
 function useSeconds(deadlineAt: number | null): number {
-  const calculate = () => deadlineAt ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000)) : 0;
-  const [seconds, setSeconds] = useState(calculate);
+  const [seconds, setSeconds] = useState(() => secondsUntil(deadlineAt));
   useEffect(() => {
-    setSeconds(calculate());
+    setSeconds(secondsUntil(deadlineAt));
     if (!deadlineAt) return;
-    const timer = window.setInterval(() => setSeconds(calculate()), 200);
+    const timer = window.setInterval(() => setSeconds(secondsUntil(deadlineAt)), 200);
     return () => window.clearInterval(timer);
   }, [deadlineAt]);
   return seconds;
+}
+
+function secondsUntil(deadlineAt: number | null): number {
+  return deadlineAt ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000)) : 0;
 }
 
 function questionLengthClass(prompt = ""): string {

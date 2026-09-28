@@ -1,0 +1,11 @@
+{
+  "id": "level-07-round-02",
+  "type": "picture_word",
+  "prompt": "Nhìn hình và đoán cụm từ.",
+  "imageUrls": ["/level-07/cnhhdh.png"],
+  "answer": "CÔNG NGHIỆP HÓA - HIỆN ĐẠI HÓA",
+  "aliases": [],
+  "explanation": "",
+  "points": 40,
+  "demo": true
+}

@@ -175,7 +175,7 @@ function WaitingRoom({ roomCode }: { roomCode: string }) {
       savePlayerSession(result.session);
       setSnapshot(result.snapshot);
       setError(null);
-    } catch (reason) {
+    } catch {
       clearPlayerSession(roomCode);
       void navigate(`/join/${roomCode}`, { replace: true });
     }

@@ -103,7 +103,7 @@ describe("full journey integration", () => {
     expect(snapshot.phase).toBe("ready");
     expect(snapshot.completedLevelIds).toHaveLength(7);
     expect(snapshot.journey).toEqual({ completedLevels: 7, alliancePiecesCollected: 7, nextLevel: null, journeyComplete: true });
-    expect(snapshot.scoreboard[0]?.totalScore).toBe(2700);
+    expect(snapshot.scoreboard[0]?.totalScore).toBe(2750);
   });
 
   it("enters and restores the authoritative final sequence after 7/7", async () => {
@@ -116,7 +116,7 @@ describe("full journey integration", () => {
     room = await service.revealFinalResults(room.roomCode, room.hostToken);
     const finalSnapshot = toLobbySnapshot(room);
     expect(finalSnapshot.phase).toBe("final_results");
-    expect(finalSnapshot.scoreboard[0]).toMatchObject({ rank: 1, totalScore: 2700, teamName: "Đội Hành Trình", characterId: "minh" });
+    expect(finalSnapshot.scoreboard[0]).toMatchObject({ rank: 1, totalScore: 2750, teamName: "Đội Hành Trình", characterId: "minh" });
 
     const resumed = toLobbySnapshot(await service.inspect(room.roomCode));
     expect(resumed.phase).toBe("final_results");

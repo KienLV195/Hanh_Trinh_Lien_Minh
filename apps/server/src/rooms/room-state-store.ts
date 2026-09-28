@@ -75,7 +75,12 @@ export interface LevelFourState {
   challengeIndex: number;
   phaseStartedAt: number;
   deadlineAt: number | null;
-  answers: Array<{ teamId: TeamId; challengeId: string; solution: LevelFourSubmission; submittedAt: number }>;
+  answers: Array<{
+    teamId: TeamId;
+    challengeId: string;
+    solution: LevelFourSubmission;
+    submittedAt: number;
+  }>;
   baseScores: Record<TeamId, number>;
   pieceAwarded: boolean;
 }
@@ -83,31 +88,59 @@ export interface LevelFourState {
 export interface LevelFiveState {
   phase: "intro" | "running" | "level_result";
   phaseStartedAt: number;
+  levelStartedAt: number | null;
   deadlineAt: number | null;
-  answers: Array<{ teamId: TeamId; checkpointIndex: number; questionId: string; optionId: string; correct: boolean; submittedAt: number }>;
-  baseScores: Record<TeamId, number>;
-  teamProgress: Record<TeamId, {
-    checkpointProgress: 0 | 1 | 2 | 3 | 4 | 5;
-    mode: "platforming" | "question" | "retry_cooldown" | "final_platforming" | "finished";
-    activeQuestionIndex: number | null;
-    retryAvailableAt: number | null;
-    finishedAt: number | null;
-    lastAnswerCorrect: boolean | null;
+  answers: Array<{
+    teamId: TeamId;
+    checkpointIndex: number;
+    questionId: string;
+    optionId: string;
+    correct: boolean;
+    submittedAt: number;
   }>;
+  baseScores: Record<TeamId, number>;
+  teamProgress: Record<
+    TeamId,
+    {
+      checkpointProgress: 0 | 1 | 2 | 3 | 4 | 5;
+      mode: "platforming" | "question" | "retry_cooldown" | "final_platforming" | "finished";
+      activeQuestionIndex: number | null;
+      retryAvailableAt: number | null;
+      finishedAt: number | null;
+      completionTimeMs: number | null;
+      finishRank: number | null;
+      finishBonus: number;
+      knowledgeScore: number | null;
+      knowledgeMultiplier: 1 | 2 | null;
+      finalScore: number | null;
+      lastAnswerCorrect: boolean | null;
+    }
+  >;
   pieceAwarded: boolean;
 }
 
 export interface LevelSixState {
   phase: "intro" | "station_active" | "station_reveal" | "level_result";
-  stationIndex: number; phaseStartedAt: number; deadlineAt: number | null;
-  answers: Array<{ teamId: TeamId; challengeId: string; solution: LevelSixSubmission; submittedAt: number }>;
-  baseScores: Record<TeamId, number>; pieceAwarded: boolean;
+  stationIndex: number;
+  phaseStartedAt: number;
+  deadlineAt: number | null;
+  answers: Array<{
+    teamId: TeamId;
+    challengeId: string;
+    solution: LevelSixSubmission;
+    submittedAt: number;
+  }>;
+  baseScores: Record<TeamId, number>;
+  pieceAwarded: boolean;
 }
 export interface LevelSevenState {
   phase: "intro" | "round_active" | "round_reveal" | "level_result";
-  roundIndex: number; phaseStartedAt: number; deadlineAt: number | null;
+  roundIndex: number;
+  phaseStartedAt: number;
+  deadlineAt: number | null;
   answers: Array<{ teamId: TeamId; roundId: string; answerText: string; submittedAt: number }>;
-  baseScores: Record<TeamId, number>; pieceAwarded: boolean;
+  baseScores: Record<TeamId, number>;
+  pieceAwarded: boolean;
 }
 
 export interface RoomState {

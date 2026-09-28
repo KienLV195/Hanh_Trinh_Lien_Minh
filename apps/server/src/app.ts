@@ -18,15 +18,16 @@ declare module "fastify" {
 export async function buildServer(config: ServerConfig): Promise<FastifyInstance> {
   const app = Fastify({ logger: config.NODE_ENV !== "test" });
   const lobbyService = new LobbyService(new InMemoryRoomStateStore());
+  const productionCorsOrigin = config.WEB_ORIGIN ?? false;
 
   await app.register(cors, {
-    origin: config.NODE_ENV === "production" ? config.WEB_ORIGIN : true,
+    origin: config.NODE_ENV === "production" ? productionCorsOrigin : true,
     credentials: true
   });
 
   const io = new SocketIOServer<ClientToServerEvents, ServerToClientEvents>(app.server, {
     cors: {
-      origin: config.NODE_ENV === "production" ? config.WEB_ORIGIN : true,
+      origin: config.NODE_ENV === "production" ? productionCorsOrigin : true,
       credentials: true
     }
   });

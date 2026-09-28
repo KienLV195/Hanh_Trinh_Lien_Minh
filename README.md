@@ -78,11 +78,11 @@ duplicate animation should appear.
 | ----------------------- | ----------------------- | -------------------------------------- |
 | `HOST`                  | `0.0.0.0`               | Backend bind address                   |
 | `PORT`                  | `3001`                  | Backend port                           |
-| `WEB_ORIGIN`            | `http://localhost:5173` | Production CORS origin                 |
+| `WEB_ORIGIN`            | same-origin only        | Optional separate frontend CORS origin |
 | `PROTOCOL_VERSION`      | `1.0.0`                 | Shared protocol compatibility          |
 | `STATIC_DIR`            | empty                   | Optional absolute Vite build directory |
-| `VITE_SERVER_URL`       | `http://localhost:3001` | Frontend health API URL                |
-| `VITE_SOCKET_URL`       | `http://localhost:3001` | Frontend Socket.IO URL                 |
+| `VITE_SERVER_URL`       | current production origin | Frontend health API URL              |
+| `VITE_SOCKET_URL`       | current production origin | Frontend Socket.IO URL               |
 | `VITE_PROTOCOL_VERSION` | `1.0.0`                 | Frontend expected protocol             |
 
 ## Folder structure
