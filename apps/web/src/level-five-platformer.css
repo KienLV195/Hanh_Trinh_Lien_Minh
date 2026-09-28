@@ -220,6 +220,42 @@
   background: #fff9e9e8;
   box-shadow: 0 16px 45px #3853361f;
 }
+
+.level-five-force-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(22, 18, 12, 0.7);
+}
+
+.level-five-force-dialog {
+  width: min(520px, 100%);
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: #fffaf0;
+  color: #33291e;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.level-five-force-dialog h2 {
+  margin: 0 0 10px;
+}
+
+.level-five-force-dialog p {
+  margin: 0 0 24px;
+}
+
+.level-five-force-dialog > div {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 .level-five-host-clock {
   display: flex;
   align-items: center;

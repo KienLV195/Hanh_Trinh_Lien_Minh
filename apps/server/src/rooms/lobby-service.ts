@@ -703,9 +703,9 @@ export class LobbyService {
       const level = state.levelOne;
       const question = LEVEL_ONE_QUESTIONS[level.questionIndex];
       const allAnswered = question
-        ? state.teams.every((team) =>
+        ? allEligibleTeamsMatch(state, (teamId) =>
             level.answers.some(
-              (answer) => answer.teamId === team.teamId && answer.questionId === question.id
+              (answer) => answer.teamId === teamId && answer.questionId === question.id
             )
           )
         : false;
@@ -760,9 +760,9 @@ export class LobbyService {
         ...level,
         answers: [...level.answers, { teamId: team.teamId, questionId, optionId, submittedAt: now }]
       };
-      const allAnswered = state.teams.every((candidate) =>
+      const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
         withAnswer.answers.some(
-          (answer) => answer.teamId === candidate.teamId && answer.questionId === question.id
+          (answer) => answer.teamId === teamId && answer.questionId === question.id
         )
       );
       const answeredState = { ...state, levelOne: withAnswer };
@@ -842,8 +842,16 @@ export class LobbyService {
         throw new LobbyError("INVALID_PHASE", "Chặng 2 không hoạt động.");
       }
       const level = state.levelTwo;
+      const challenge = LEVEL_TWO_CHALLENGES[level.currentRoundIndex];
+      const allAnswered = challenge
+        ? allEligibleTeamsMatch(state, (teamId) =>
+            level.answers.some(
+              (answer) => answer.teamId === teamId && answer.challengeId === challenge.id
+            )
+          )
+        : false;
       if (!force && now < (level.deadlineAt ?? Number.POSITIVE_INFINITY)) {
-        return state;
+        if (!(level.phase === "round_active" && allAnswered)) return state;
       }
       return bump({ ...state, levelTwo: advanceLevelTwoState(state, now) });
     });
@@ -929,16 +937,28 @@ export class LobbyService {
         { teamId: team.teamId, challengeId, keyword, submittedAt: now, correct }
       ];
       if (!correct) {
+        const withAnswer = { ...level, answers };
+        const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
+          answers.some((answer) => answer.teamId === teamId && answer.challengeId === challenge.id)
+        );
         return bump({
           ...state,
-          levelTwo: {
-            ...level,
-            answers,
-            cooldownUntilByTeam: {
-              ...level.cooldownUntilByTeam,
-              [team.teamId]: now + LEVEL_TWO_TIMING.cooldownMs
-            }
-          }
+          levelTwo: allAnswered
+            ? {
+                ...withAnswer,
+                phase: "round_complete",
+                phaseStartedAt: now,
+                deadlineAt: null,
+                roundWinnerTeamId: null,
+                roundReward: 0
+              }
+            : {
+                ...withAnswer,
+                cooldownUntilByTeam: {
+                  ...level.cooldownUntilByTeam,
+                  [team.teamId]: now + LEVEL_TWO_TIMING.cooldownMs
+                }
+              }
         });
       }
       const baseScores = {
@@ -1029,9 +1049,9 @@ export class LobbyService {
       const level = state.levelThree;
       const round = LEVEL_THREE_ROUNDS[level.roundIndex];
       const allAnswered = round
-        ? state.teams.every((team) =>
+        ? allEligibleTeamsMatch(state, (teamId) =>
             level.answers.some(
-              (answer) => answer.teamId === team.teamId && answer.roundId === round.id
+              (answer) => answer.teamId === teamId && answer.roundId === round.id
             )
           )
         : false;
@@ -1088,9 +1108,9 @@ export class LobbyService {
           { teamId: team.teamId, roundId, answerText: normalizedAnswer, submittedAt: now }
         ]
       };
-      const allAnswered = state.teams.every((candidate) =>
+      const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
         withAnswer.answers.some(
-          (answer) => answer.teamId === candidate.teamId && answer.roundId === round.id
+          (answer) => answer.teamId === teamId && answer.roundId === round.id
         )
       );
       const answeredState = { ...state, levelThree: withAnswer };
@@ -1161,9 +1181,9 @@ export class LobbyService {
         throw new LobbyError("INVALID_PHASE", "Chặng 4 không hoạt động.");
       const challenge = LEVEL_FOUR_CHALLENGES[state.levelFour.challengeIndex];
       const allAnswered = challenge
-        ? state.teams.every((team) =>
+        ? allEligibleTeamsMatch(state, (teamId) =>
             state.levelFour!.answers.some(
-              (answer) => answer.teamId === team.teamId && answer.challengeId === challenge.id
+              (answer) => answer.teamId === teamId && answer.challengeId === challenge.id
             )
           )
         : false;
@@ -1216,9 +1236,9 @@ export class LobbyService {
         ]
       };
       const answeredState = { ...state, levelFour: withAnswer };
-      const allAnswered = state.teams.every((candidate) =>
+      const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
         withAnswer.answers.some(
-          (answer) => answer.teamId === candidate.teamId && answer.challengeId === challenge.id
+          (answer) => answer.teamId === teamId && answer.challengeId === challenge.id
         )
       );
       return bump({
@@ -1505,6 +1525,32 @@ export class LobbyService {
     return updated;
   }
 
+  async forceCompleteLevelFive(
+    roomCode: string,
+    hostToken: string,
+    now = Date.now()
+  ): Promise<RoomState> {
+    const updated = await this.store.mutateByCode(normalizeRoomCode(roomCode), (state) => {
+      this.#requireHost(state, hostToken);
+      const level = state.levelFive;
+      if (state.phase !== "level_5" || !level || level.phase !== "running") {
+        throw new LobbyError("INVALID_PHASE", "Chặng 5 không thể kết thúc lúc này.");
+      }
+      return bump({
+        ...state,
+        levelFive: {
+          ...level,
+          phase: "level_result",
+          phaseStartedAt: now,
+          deadlineAt: null,
+          pieceAwarded: true
+        }
+      });
+    });
+    if (!updated) throw new LobbyError("ROOM_NOT_FOUND", "Không tìm thấy phòng.");
+    return updated;
+  }
+
   async returnLevelFiveToMap(roomCode: string, hostToken: string): Promise<RoomState> {
     const updated = await this.store.mutateByCode(normalizeRoomCode(roomCode), (state) => {
       this.#requireHost(state, hostToken);
@@ -1562,9 +1608,9 @@ export class LobbyService {
         throw new LobbyError("INVALID_PHASE", "Chặng 6 không hoạt động.");
       const challenge = LEVEL_SIX_CHALLENGES[state.levelSix.stationIndex];
       const allAnswered = challenge
-        ? state.teams.every((team) =>
+        ? allEligibleTeamsMatch(state, (teamId) =>
             state.levelSix!.answers.some(
-              (answer) => answer.teamId === team.teamId && answer.challengeId === challenge.id
+              (answer) => answer.teamId === teamId && answer.challengeId === challenge.id
             )
           )
         : false;
@@ -1617,9 +1663,9 @@ export class LobbyService {
         ]
       };
       const answeredState = { ...state, levelSix: withAnswer };
-      const allAnswered = state.teams.every((item) =>
+      const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
         withAnswer.answers.some(
-          (answer) => answer.teamId === item.teamId && answer.challengeId === challenge.id
+          (answer) => answer.teamId === teamId && answer.challengeId === challenge.id
         )
       );
       return bump({
@@ -1688,9 +1734,9 @@ export class LobbyService {
         throw new LobbyError("INVALID_PHASE", "Chặng 7 không hoạt động.");
       const round = LEVEL_SEVEN_ROUNDS[state.levelSeven.roundIndex];
       const allAnswered = round
-        ? state.teams.every((team) =>
+        ? allEligibleTeamsMatch(state, (teamId) =>
             state.levelSeven!.answers.some(
-              (answer) => answer.teamId === team.teamId && answer.roundId === round.id
+              (answer) => answer.teamId === teamId && answer.roundId === round.id
             )
           )
         : false;
@@ -1743,9 +1789,9 @@ export class LobbyService {
         ]
       };
       const answeredState = { ...state, levelSeven: withAnswer };
-      const allAnswered = state.teams.every((item) =>
+      const allAnswered = allEligibleTeamsMatch(state, (teamId) =>
         withAnswer.answers.some(
-          (answer) => answer.teamId === item.teamId && answer.roundId === round.id
+          (answer) => answer.teamId === teamId && answer.roundId === round.id
         )
       );
       return bump({
@@ -1833,7 +1879,10 @@ export class LobbyService {
     return updated;
   }
 
-  async disconnect(socketId: string): Promise<Array<{ state: RoomState; teamId: string }>> {
+  async disconnect(
+    socketId: string,
+    now = Date.now()
+  ): Promise<Array<{ state: RoomState; teamId: string }>> {
     const changed: Array<{ state: RoomState; teamId: string }> = [];
     for (const room of await this.store.list()) {
       const disconnectedTeam = room.teams.find(
@@ -1848,7 +1897,23 @@ export class LobbyService {
           )
         })
       );
-      if (updated) changed.push({ state: updated, teamId: disconnectedTeam.teamId });
+      if (updated) {
+        const advanced =
+          updated.phase === "level_1"
+            ? await this.advanceLevelOne(updated.roomCode, now)
+            : updated.phase === "level_2"
+              ? await this.advanceLevelTwo(updated.roomCode, now)
+              : updated.phase === "level_3"
+                ? await this.advanceLevelThree(updated.roomCode, now)
+                : updated.phase === "level_4"
+                  ? await this.advanceLevelFour(updated.roomCode, now)
+                  : updated.phase === "level_6"
+                    ? await this.advanceLevelSix(updated.roomCode, now)
+                    : updated.phase === "level_7"
+                      ? await this.advanceLevelSeven(updated.roomCode, now)
+                      : updated;
+        changed.push({ state: advanced, teamId: disconnectedTeam.teamId });
+      }
     }
     return changed;
   }
@@ -1928,8 +1993,18 @@ function advanceLevelTwoState(state: RoomState, now: number): NonNullable<RoomSt
       ...level,
       phase: "round_active",
       phaseStartedAt: now,
-      deadlineAt: null,
+      deadlineAt: now + LEVEL_TWO_TIMING.answerMs,
       startedAt: now
+    };
+  }
+  if (level.phase === "round_active") {
+    return {
+      ...level,
+      phase: "round_complete",
+      phaseStartedAt: now,
+      deadlineAt: null,
+      roundWinnerTeamId: null,
+      roundReward: 0
     };
   }
   if (level.phase === "round_complete") {
@@ -1939,7 +2014,7 @@ function advanceLevelTwoState(state: RoomState, now: number): NonNullable<RoomSt
         phase: "round_active",
         currentRoundIndex: 1,
         phaseStartedAt: now,
-        deadlineAt: null,
+        deadlineAt: now + LEVEL_TWO_TIMING.answerMs,
         openedTiles: [],
         currentReward: 1000,
         roundWinnerTeamId: null,
@@ -2275,12 +2350,17 @@ function createLevelFiveResults(state: RoomState) {
         multiplier,
         finalScore: baseScore * multiplier + finishBonus,
         accumulatedTotalScore: totals.get(team.teamId) ?? 0,
-        completionTimeMs: progress?.completionTimeMs ?? 0,
-        finishRank: progress?.finishRank ?? state.teams.length,
+        completionTimeMs: progress?.completionTimeMs ?? null,
+        finishRank: progress?.finishRank ?? null,
         finishBonus
       };
     })
-    .sort((left, right) => left.finishRank - right.finishRank);
+    .sort((left, right) => (left.finishRank ?? Number.POSITIVE_INFINITY) - (right.finishRank ?? Number.POSITIVE_INFINITY));
+}
+
+function allEligibleTeamsMatch(state: RoomState, predicate: (teamId: string) => boolean): boolean {
+  const eligibleTeams = state.teams.filter((team) => team.connected);
+  return eligibleTeams.length > 0 && eligibleTeams.every((team) => predicate(team.teamId));
 }
 
 function createScoreboard(state: RoomState): TeamScorePublic[] {

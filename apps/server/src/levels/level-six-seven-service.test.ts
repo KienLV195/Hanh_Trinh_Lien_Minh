@@ -170,6 +170,35 @@ describe("Level 7 picture word game", () => {
     expect(normalizeLevelSevenAnswer("DOAN KET")).not.toBe(normalizeLevelSevenAnswer("ĐOÀN KẾT"));
   });
 
+  it.each([
+    "CÔNG NGHIỆP HÓA HIỆN ĐẠI HÓA",
+    "CNH-HĐH",
+    "CNH - HĐH",
+    "CNH HĐH",
+    "CNHHĐH",
+    "CNH-HDH",
+    "CNH HDH",
+    "CNHHDH"
+  ])("accepts the explicit round-two alias %s", async (alias) => {
+    const { service, room } = await startSeven("vy");
+    let updated = await service.submitLevelSevenAnswer(
+      room.roomCode,
+      room.teams[0]!.sessionToken,
+      LEVEL_SEVEN_ROUNDS[0].id,
+      LEVEL_SEVEN_ROUNDS[0].answer,
+      35_000
+    );
+    updated = await service.advanceLevelSeven(updated.roomCode, 38_100);
+    updated = await service.submitLevelSevenAnswer(
+      updated.roomCode,
+      updated.teams[0]!.sessionToken,
+      LEVEL_SEVEN_ROUNDS[1].id,
+      alias,
+      39_000
+    );
+    expect(updated.levelSeven?.baseScores[room.teams[0]!.teamId]).toBe(70);
+  });
+
   it("rejects a repeated submission without awarding twice", async () => {
     const { service, room } = await startSeven("vy");
     const round = LEVEL_SEVEN_ROUNDS[0];

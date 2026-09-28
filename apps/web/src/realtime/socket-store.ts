@@ -188,6 +188,7 @@ class SocketStore {
   returnLevelFourToMap(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelFour.returnToMap", credentials, ack)); }
   startLevelFive(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelFive.start", credentials, ack)); }
   continueLevelFive(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelFive.continue", credentials, ack)); }
+  forceCompleteLevelFive(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelFive.forceComplete", credentials, ack)); }
   returnLevelFiveToMap(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelFive.returnToMap", credentials, ack)); }
   startLevelSix(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelSix.start", credentials, ack)); }
   continueLevelSix(credentials: HostRoomCredentials) { return this.#acknowledge<{ snapshot: LobbySnapshot }>((ack) => this.#socket.emit("host.levelSix.continue", credentials, ack)); }

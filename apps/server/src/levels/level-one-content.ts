@@ -55,7 +55,7 @@ export const LEVEL_ONE_QUESTIONS = [
 
 export const LEVEL_ONE_TIMING = {
   introMs: 4_500,
-  answerMs: 12_000,
+  answerMs: 30_000,
   revealMs: 3_000,
   transitionMs: 1_500
 } as const;

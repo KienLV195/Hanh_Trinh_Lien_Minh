@@ -12,4 +12,4 @@ export const LEVEL_SIX_CHALLENGES = [
   { id: "demo-level-06-station-04", station: 4, type: "singleChoice", prompt: "Trong một xã hội có nhiều nhóm với vị trí và lợi ích khác nhau, sự đồng thuận nên được hiểu gần nhất là gì?", options: [{ id: "a", text: "Các lực lượng chỉ còn lợi ích chung và không còn lợi ích riêng." }, { id: "b", text: "Các lực lượng có khả năng phối hợp trên những mục tiêu chung dù vẫn tồn tại khác biệt." }, { id: "c", text: "Một lực lượng thống nhất các lực lượng còn lại theo mục tiêu của mình." }, { id: "d", text: "Các lợi ích riêng phải tạm thời bị gác lại." }], solution: { type: "singleChoice", optionId: "b" }, explanation: "Đồng thuận không đồng nghĩa với việc tất cả lực lượng phải có lợi ích giống nhau; trọng tâm là khả năng phối hợp trên những mục tiêu chung.", points: 25, demo: true }
 ] as const satisfies readonly LevelSixChallenge[];
 
-export const LEVEL_SIX_TIMING = { introMs: 4_500, answerMs: 13_000, revealMs: 3_000 } as const;
+export const LEVEL_SIX_TIMING = { introMs: 4_500, answerMs: 30_000, revealMs: 3_000 } as const;

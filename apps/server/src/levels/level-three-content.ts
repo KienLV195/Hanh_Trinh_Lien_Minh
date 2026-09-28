@@ -57,5 +57,5 @@ export const LEVEL_THREE_ROUNDS = [
 
 export const LEVEL_THREE_TIMING = {
   introMs: 4_500,
-  answerMs: 16_000
+  answerMs: 30_000
 } as const;

@@ -26,27 +26,30 @@ export function HostLevelFive({
   busy,
   error,
   onContinue,
+  onForceComplete,
   onReturn
 }: {
   snapshot: LobbySnapshot;
   busy: boolean;
   error: string | null;
   onContinue: () => void;
+  onForceComplete: () => void;
   onReturn: () => void;
 }) {
   const level = snapshot.levelFive;
   const now = useClock(500);
+  const [showForceConfirmation, setShowForceConfirmation] = useState(false);
   if (!level) return null;
   if (level.phase === "intro")
     return (
-      <PageShell title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 · Sân Hội Làng">
+      <PageShell className="level-five-page" title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 · Sân Hội Làng">
         <section className="level-intro level-intro--festival">
-          <span className="eyebrow">SÂN NHÀ CỦA NAM</span>
+          <span className="eyebrow">SÂN NHÀ CỦA KHẢI</span>
           <h2>HÀNH TRÌNH VƯỢT THỬ THÁCH</h2>
           <p>Vượt địa hình · mở 5 checkpoint · trả lời 5 câu hỏi · chạm cổng đích.</p>
           <div className="home-advantage home-advantage--orange">
             <strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong>
-            <span>Áp dụng cho đội đồng hành cùng Nam.</span>
+            <span>Áp dụng cho đội đồng hành cùng Khải.</span>
           </div>
           <button className="button button--secondary" disabled={busy} onClick={onContinue}>
             BẮT ĐẦU
@@ -58,7 +61,7 @@ export function HostLevelFive({
     return <LevelFiveResults snapshot={snapshot} busy={busy} error={error} onReturn={onReturn} />;
   const elapsedMs = level.levelStartedAt === null ? 0 : Math.max(0, now - level.levelStartedAt);
   return (
-    <PageShell title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 · Tiến độ trực tiếp">
+    <PageShell className="level-five-page" title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 · Tiến độ trực tiếp">
       <section className="level-five-host-progress">
         <header className="level-five-host-clock">
           <span>THỜI GIAN</span>
@@ -98,6 +101,26 @@ export function HostLevelFive({
             </article>
           );
         })}
+        <button
+          className="button button--secondary"
+          disabled={busy}
+          onClick={() => setShowForceConfirmation(true)}
+          type="button"
+        >
+          HOÀN THÀNH CHẶNG
+        </button>
+        {showForceConfirmation && (
+          <div className="level-five-force-backdrop" role="presentation">
+            <section aria-labelledby="level-five-force-title" aria-modal="true" className="level-five-force-dialog" role="dialog">
+              <h2 id="level-five-force-title">Một số đội chưa hoàn thành Chặng 5.</h2>
+              <p>Bạn có chắc muốn kết thúc chặng và tiếp tục không?</p>
+              <div>
+                <button className="button button--secondary" disabled={busy} onClick={() => setShowForceConfirmation(false)} type="button">QUAY LẠI</button>
+                <button className="button button--primary" disabled={busy} onClick={() => { setShowForceConfirmation(false); onForceComplete(); }} type="button">VẪN HOÀN THÀNH</button>
+              </div>
+            </section>
+          </div>
+        )}
         {error && <p className="form-error">{error}</p>}
       </section>
     </PageShell>
@@ -170,7 +193,7 @@ export function PlayerLevelFive({
   if (!level || !teamState || !ownTeam?.characterId) return null;
   if (level.phase === "intro")
     return (
-      <PageShell compact title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 sắp bắt đầu">
+      <PageShell className="level-five-page" compact title="Hành Trình Vượt Thử Thách" subtitle="Chặng 05 sắp bắt đầu">
         <section className="player-level-state">
           <h2>{teamName}</h2>
           <p>A / ← sang trái · D / → sang phải · W / ↑ / SPACE để nhảy</p>
@@ -180,7 +203,7 @@ export function PlayerLevelFive({
         </section>
       </PageShell>
     );
-  if (teamState.mode === "finished" && finishPresented) {
+  if (level.phase === "level_result" || (teamState.mode === "finished" && finishPresented)) {
     const result = level.results?.find((item) => item.teamId === teamId);
     return <PlayerLevelFiveResult result={result} progress={teamState} teamName={teamName} />;
   }
@@ -193,6 +216,7 @@ export function PlayerLevelFive({
     teamState.mode === "question" || (teamState.mode === "retry_cooldown" && retrySeconds === 0);
   return (
     <PageShell
+      className="level-five-page"
       compact
       title="HÀNH TRÌNH VƯỢT THỬ THÁCH"
       subtitle="Chặng 5 · Qua miền quê, kết tình đồng đội"
@@ -206,7 +230,7 @@ export function PlayerLevelFive({
           />
           <span aria-live="polite">
             Điểm gốc <b>{teamState.checkpointProgress * 20} / 100</b>
-            {ownTeam.characterId === "nam" && <em>Nam ×2</em>}
+            {ownTeam.characterId === "nam" && <em>Khải ×2</em>}
           </span>
         </div>
         <Suspense fallback={<div className="level-five-loading">Đang mở hành trình…</div>}>
@@ -325,22 +349,24 @@ function LevelFiveResults({
 }) {
   const level = snapshot.levelFive!;
   return (
-    <PageShell title="HOÀN THÀNH CHẶNG 05" subtitle="HÀNH TRÌNH VƯỢT THỬ THÁCH">
+    <PageShell className="level-five-page" title="HOÀN THÀNH CHẶNG 05" subtitle="HÀNH TRÌNH VƯỢT THỬ THÁCH">
       <section className="level-results level-results--festival">
         <div className="alliance-piece">◆</div>
         <h2>MẢNH LIÊN MINH 05</h2>
         <div className="result-table">
-          {level.results?.map((result, index) => (
+          {level.results?.map((result) => (
             <div className="result-row" key={result.teamId}>
               <strong>
-                #{index + 1} · {result.teamName}
+                {result.finishRank ? `#${result.finishRank}` : "—"} · {result.teamName}
               </strong>
               <span>
                 {result.baseScore} × {result.multiplier} + {result.finishBonus} ={" "}
                 <b>{result.finalScore}</b>
               </span>
               <small>
-                {rankLabel(result.finishRank)} · {formatDuration(result.completionTimeMs)}
+                {result.finishRank && result.completionTimeMs !== null
+                  ? `${rankLabel(result.finishRank)} · ${formatDuration(result.completionTimeMs)}`
+                  : "CHƯA VỀ ĐÍCH"}
               </small>
             </div>
           ))}
@@ -368,15 +394,15 @@ function PlayerLevelFiveResult({
   const finishBonus = result?.finishBonus ?? progress.finishBonus;
   const finalScore =
     result?.finalScore ?? progress.finalScore ?? knowledgeScore * multiplier + finishBonus;
+  const finished = progress.mode === "finished";
+  const completionTimeMs = result?.completionTimeMs ?? progress.completionTimeMs;
   return (
-    <PageShell compact title="VỀ ĐÍCH!" subtitle={teamName}>
+    <PageShell className="level-five-page" compact title={finished ? "VỀ ĐÍCH!" : "CHẶNG ĐÃ KẾT THÚC"} subtitle={teamName}>
       <section className="player-level-state level-five-finish-result">
         <div className="alliance-piece">⚑</div>
         <h2>{rankLabel(result?.finishRank ?? progress.finishRank)}</h2>
-        <p>
-          Thời gian:{" "}
-          <b>{formatDuration(result?.completionTimeMs ?? progress.completionTimeMs ?? 0)}</b>
-        </p>
+        {completionTimeMs !== null && <p>Thời gian: <b>{formatDuration(completionTimeMs)}</b></p>}
+        {!finished && <p>Đội chưa về đích trước khi MC kết thúc chặng.</p>}
         <dl>
           <div>
             <dt>Điểm kiến thức</dt>

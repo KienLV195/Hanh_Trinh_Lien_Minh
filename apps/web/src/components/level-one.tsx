@@ -50,7 +50,7 @@ export function HostLevelOne({
           <span className="eyebrow">Đang mở cổng tri thức · {seconds}s</span>
           <h2>VÒNG QUAY TRI THỨC</h2>
           <p>3 câu hỏi · 30 / 30 / 40 điểm · mỗi đội chỉ được trả lời một lần.</p>
-          {minhTeam && <div className="home-advantage"><strong>LỢI THẾ SÂN NHÀ ×2</strong><span>{minhTeam.teamName} đồng hành cùng Minh tại Xưởng Công Nghệ.</span></div>}
+          {minhTeam && <div className="home-advantage"><strong>LỢI THẾ SÂN NHÀ ×2</strong><span>{minhTeam.teamName} đồng hành cùng Toàn tại Xưởng Công Nghệ.</span></div>}
           <button className="button button--secondary" disabled={busy} onClick={onContinue} type="button">TIẾP TỤC</button>
         </section>
       </PageShell>

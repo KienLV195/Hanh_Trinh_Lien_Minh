@@ -79,7 +79,7 @@ export interface TeamScoreSummary {
 export const CHARACTERS = [
   {
     id: "minh",
-    name: "MINH",
+    name: "TOÀN",
     role: "Công nhân",
     gender: "male",
     accent: "blue",
@@ -88,7 +88,7 @@ export const CHARACTERS = [
   },
   {
     id: "an",
-    name: "AN",
+    name: "KIÊN",
     role: "Nông dân",
     gender: "male",
     accent: "green",
@@ -97,7 +97,7 @@ export const CHARACTERS = [
   },
   {
     id: "khoa",
-    name: "KHOA",
+    name: "ANH",
     role: "Trí thức",
     gender: "male",
     accent: "indigo",
@@ -106,7 +106,7 @@ export const CHARACTERS = [
   },
   {
     id: "linh",
-    name: "LINH",
+    name: "THƯ",
     role: "Doanh nhân",
     gender: "female",
     accent: "coral",
@@ -115,7 +115,7 @@ export const CHARACTERS = [
   },
   {
     id: "nam",
-    name: "NAM",
+    name: "KHẢI",
     role: "Thanh niên",
     gender: "male",
     accent: "orange",
@@ -124,7 +124,7 @@ export const CHARACTERS = [
   },
   {
     id: "vy",
-    name: "VY",
+    name: "CHÂU",
     role: "Sinh viên",
     gender: "female",
     accent: "teal",
@@ -134,7 +134,7 @@ export const CHARACTERS = [
   },
   {
     id: "mai",
-    name: "MAI",
+    name: "UYÊN",
     role: "Phụ nữ",
     gender: "female",
     accent: "berry",

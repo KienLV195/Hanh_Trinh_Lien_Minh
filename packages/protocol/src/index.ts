@@ -147,8 +147,8 @@ export interface LevelTwoChallengePublic {
 export type LevelResultPublic = LevelOneResultPublic;
 
 export interface LevelFiveResultPublic extends LevelOneResultPublic {
-  completionTimeMs: number;
-  finishRank: number;
+  completionTimeMs: number | null;
+  finishRank: number | null;
   finishBonus: number;
 }
 
@@ -505,6 +505,10 @@ export interface ClientToServerEvents {
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "host.levelFive.continue": (
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelFive.forceComplete": (
     payload: HostRoomCredentials,
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;

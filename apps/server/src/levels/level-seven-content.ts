@@ -36,7 +36,16 @@ export const LEVEL_SEVEN_ROUNDS = [
     prompt: "Nhìn hình và đoán cụm từ.",
     imageUrls: ["/level-07/cnhhdh.png"],
     answer: "CÔNG NGHIỆP HÓA - HIỆN ĐẠI HÓA",
-    aliases: [],
+    aliases: [
+      "CÔNG NGHIỆP HÓA HIỆN ĐẠI HÓA",
+      "CNH-HĐH",
+      "CNH - HĐH",
+      "CNH HĐH",
+      "CNHHĐH",
+      "CNH-HDH",
+      "CNH HDH",
+      "CNHHDH"
+    ],
     explanation: "",
     points: 40,
     demo: true
@@ -54,4 +63,4 @@ export const LEVEL_SEVEN_ROUNDS = [
   }
 ] as const satisfies readonly LevelSevenRound[];
 
-export const LEVEL_SEVEN_TIMING = { introMs: 4_500, answerMs: 13_000, revealMs: 3_000 } as const;
+export const LEVEL_SEVEN_TIMING = { introMs: 4_500, answerMs: 45_000, revealMs: 3_000 } as const;

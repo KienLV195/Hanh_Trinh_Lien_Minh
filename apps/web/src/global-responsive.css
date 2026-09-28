@@ -122,6 +122,21 @@ textarea {
   background-attachment: fixed;
 }
 
+/* Level-specific illustration: keep the Level 5 Phaser canvas itself untouched. */
+main.page-shell.page-shell--host.level-three-page,
+main.page-shell.page-shell--player.level-three-page,
+main.page-shell.page-shell--host.level-five-page,
+main.page-shell.page-shell--player.level-five-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #dfe3c4;
+  background-image: url("/background/background-fea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 /* Host lobby and general two-column shells use the available desktop width. */
 .lobby-layout {
   grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);

@@ -215,6 +215,20 @@ function HostLobby({ roomCode }: { roomCode: string }) {
     }
   };
 
+  const forceCompleteLevelFive = async () => {
+    if (!credentials) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await socketStore.forceCompleteLevelFive(credentials);
+      setSnapshot(result.snapshot);
+    } catch (reason) {
+      setError(messageOf(reason));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const runFinalAction = async (action: "enter" | "reveal" | "complete" | "review") => {
     if (!credentials) return;
     setBusy(true);
@@ -275,7 +289,7 @@ function HostLobby({ roomCode }: { roomCode: string }) {
   }
 
   if (snapshot?.phase === "level_4") return <HostLevelFour snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(4, "continue")} onReturn={() => void runLevelAction(4, "return")} />;
-  if (snapshot?.phase === "level_5") return <HostLevelFive snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(5, "continue")} onReturn={() => void runLevelAction(5, "return")} />;
+  if (snapshot?.phase === "level_5") return <HostLevelFive snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(5, "continue")} onForceComplete={() => void forceCompleteLevelFive()} onReturn={() => void runLevelAction(5, "return")} />;
   if (snapshot?.phase === "level_6") return <HostLevelSix snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(6, "continue")} onReturn={() => void runLevelAction(6, "return")} />;
   if (snapshot?.phase === "level_7") return <HostLevelSeven snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(7, "continue")} onReturn={() => void runLevelAction(7, "return")} />;
   if (snapshot?.phase === "alliance_center") return <AllianceConvergence mode="host" busy={busy} error={error} onReveal={() => void runFinalAction("reveal")} />;

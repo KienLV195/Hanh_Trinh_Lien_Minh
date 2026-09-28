@@ -55,4 +55,4 @@ export const LEVEL_FOUR_CHALLENGES = [
   ),
 ] as const satisfies readonly LevelFourChallenge[];
 
-export const LEVEL_FOUR_TIMING = { introMs: 4_500, answerMs: 13_000, revealMs: 3_000 } as const;
+export const LEVEL_FOUR_TIMING = { introMs: 4_500, answerMs: 30_000, revealMs: 3_000 } as const;

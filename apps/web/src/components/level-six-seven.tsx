@@ -87,12 +87,12 @@ export function HostLevelSix({ snapshot, busy, error, onContinue, onReturn }: Ho
     return (
       <PageShell title="Campus" subtitle="Chặng 06 · Tiếp Sức Tri Thức">
         <section className="level-intro level-intro--campus">
-          <span className="eyebrow">SÂN NHÀ CỦA VY · {seconds}s</span>
+          <span className="eyebrow">SÂN NHÀ CỦA CHÂU · {seconds}s</span>
           <h2>TIẾP SỨC TRI THỨC</h2>
           <p>4 trạm đồng bộ · mỗi đáp án đúng nhận 25 điểm.</p>
           <div className="home-advantage home-advantage--teal">
             <strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong>
-            <span>Vy là nhân vật sinh viên trong hành trình gameplay.</span>
+            <span>Châu là nhân vật sinh viên trong hành trình gameplay.</span>
           </div>
           <button className="button button--secondary" disabled={busy} onClick={onContinue}>
             TIẾP TỤC
@@ -250,7 +250,7 @@ export function PlayerLevelSix({
     return (
       <PageShell compact title="Campus" subtitle="Tiếp Sức Tri Thức">
         <section className="player-level-state">
-          <h2>SÂN NHÀ CỦA VY</h2>
+          <h2>SÂN NHÀ CỦA CHÂU</h2>
           <strong className="advantage-chip">LỢI THẾ SÂN NHÀ ×2</strong>
           <small>{seconds}s</small>
         </section>
@@ -349,7 +349,7 @@ export function HostLevelSeven({ snapshot, busy, error, onContinue, onReturn }: 
     return (
       <PageShell title="Lễ Hội Cộng Đồng" subtitle="Chặng 07 · Nhìn Hình Đoán Chữ">
         <section className="level-intro level-intro--festival-seven">
-          <span className="eyebrow">SÂN NHÀ CỦA MAI · {seconds}s</span>
+          <span className="eyebrow">SÂN NHÀ CỦA UYÊN · {seconds}s</span>
           <h2>NHÌN HÌNH ĐOÁN CHỮ</h2>
           <p>3 câu đố hình ảnh · tổng điểm cơ bản tối đa 100.</p>
           <div className="home-advantage home-advantage--berry">
@@ -467,7 +467,7 @@ export function PlayerLevelSeven({
     return (
       <PageShell compact title="Lễ Hội Cộng Đồng" subtitle="Nhìn Hình Đoán Chữ">
         <section className="player-level-state">
-          <h2>SÂN NHÀ CỦA MAI</h2>
+          <h2>SÂN NHÀ CỦA UYÊN</h2>
           <strong className="advantage-chip">LỢI THẾ SÂN NHÀ ×2</strong>
           <small>{seconds}s</small>
         </section>

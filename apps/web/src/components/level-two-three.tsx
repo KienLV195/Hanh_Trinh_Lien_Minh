@@ -42,10 +42,10 @@ export function HostLevelTwo({
       <PageShell title="Đồng Quê Xanh" subtitle="Chặng 02 · Đuổi Hình Bắt Chữ">
         <section className="level-intro level-intro--field">
           <div className="field-mark" aria-hidden="true"><span>▰</span><span>▰</span><span>▰</span></div>
-          <span className="eyebrow">SÂN NHÀ CỦA AN · {seconds}s</span>
+          <span className="eyebrow">SÂN NHÀ CỦA KIÊN · {seconds}s</span>
           <h2>ĐUỔI HÌNH BẮT CHỮ</h2>
           <p>2 lượt đoán hình · mỗi lượt có 4 mảnh gợi ý được mở ngẫu nhiên · đội đoán đúng đầu tiên nhận điểm.</p>
-          {anTeam && <div className="home-advantage home-advantage--green"><strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong><span>{anTeam.teamName} đồng hành cùng An tại Đồng Quê Xanh.</span></div>}
+          {anTeam && <div className="home-advantage home-advantage--green"><strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong><span>{anTeam.teamName} đồng hành cùng Kiên tại Đồng Quê Xanh.</span></div>}
           <button className="button button--secondary" disabled={busy} onClick={onContinue} type="button">TIẾP TỤC</button>
         </section>
       </PageShell>
@@ -62,7 +62,7 @@ export function HostLevelTwo({
   return (
     <PageShell title="Đuổi Hình Bắt Chữ" subtitle={`Chặng 02 · Lượt ${level.currentRound}/2`}>
       <section className="host-board-grid level-two-reveal-host">
-        <header className="level-two-scorebar"><span>LƯỢT {level.currentRound} / 2</span><strong>{level.currentReward} ĐIỂM</strong><small>{level.guessedTeamIds.length}/{snapshot.teamCount} đội đã đoán</small></header>
+        <header className="level-two-scorebar"><span>LƯỢT {level.currentRound} / 2</span><strong>{completed ? "ĐÃ KẾT THÚC" : `${seconds} GIÂY`}</strong><small>{level.guessedTeamIds.length}/{snapshot.teamCount} đội đã đoán</small></header>
         <div className={`image-reveal-board${completed ? " is-complete" : ""}`} aria-label={`Ảnh đuổi hình bắt chữ lượt ${level.currentRound}`}>
           {challenge && <img alt={`Ảnh bí mật lượt ${level.currentRound}`} src={challenge.image} />}
           <div className={`reveal-tile-grid${level.currentRound === 2 ? " reveal-tile-grid--vertical" : ""}`}>
@@ -89,7 +89,7 @@ export function HostLevelTwo({
             <h2>{roundResult ? `ĐỘI ${roundResult.winnerTeamName} ĐÃ ĐOÁN ĐÚNG` : "CHƯA CÓ ĐỘI ĐOÁN ĐÚNG"}</h2>
             <p>TỪ KHÓA <strong>{level.reveal?.keyword}</strong></p>
             {roundResult
-              ? <div className="round-score-detail"><span>Điểm đoán hình <b>{roundResult.baseReward}</b></span>{roundResult.multiplier === 2 && <span>Sân nhà An <b>×2</b></span>}<span>Tổng nhận <b>{roundResult.awardedScore}</b></span></div>
+              ? <div className="round-score-detail"><span>Điểm đoán hình <b>{roundResult.baseReward}</b></span>{roundResult.multiplier === 2 && <span>Sân nhà Kiên <b>×2</b></span>}<span>Tổng nhận <b>{roundResult.awardedScore}</b></span></div>
               : <p className="no-winner-note">MC đã chủ động hiển thị đáp án · Không cộng điểm lượt này</p>}
             <button className="button button--primary" disabled={busy} onClick={onContinue} type="button">{level.currentRound === 1 ? "LƯỢT TIẾP THEO" : "HOÀN THÀNH CHẶNG"}</button>
           </div>
@@ -142,7 +142,7 @@ export function PlayerLevelTwo({
       <section className="player-question level-two-player-card">
         <span className="round-badge">LƯỢT {level.currentRound} / 2</span>
         {!completed ? <>
-          <span className="eyebrow">TỪ KHÓA BÍ MẬT</span>
+          <span className="eyebrow">TỪ KHÓA BÍ MẬT · {seconds} GIÂY</span>
           <p className="keyword-hint"><span>GỢI Ý</span>{challenge?.hint}</p>
           <strong className="keyword-pattern">{challenge?.keywordPattern}</strong>
           <strong className="player-round-reward">{level.currentReward} ĐIỂM</strong>
@@ -184,13 +184,13 @@ export function HostLevelThree({
 
   if (level.phase === "intro") {
     return (
-      <PageShell title="Đố Vui" subtitle="Chặng 03 · Không Gian Tri Thức">
+      <PageShell className="level-three-page" title="Đố Vui" subtitle="Chặng 03 · Không Gian Tri Thức">
         <section className="level-intro level-intro--knowledge">
           <div className="knowledge-mark" aria-hidden="true">?</div>
-          <span className="eyebrow">SÂN NHÀ CỦA KHOA · {seconds}s</span>
+          <span className="eyebrow">SÂN NHÀ CỦA ANH · {seconds}s</span>
           <h2>ĐỐ VUI</h2>
           <p>2 câu đố · mỗi câu 50 điểm · mỗi đội chỉ gửi một đáp án.</p>
-          {khoaTeam && <div className="home-advantage home-advantage--indigo"><strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong><span>{khoaTeam.teamName} đồng hành cùng Khoa tại Không Gian Tri Thức.</span></div>}
+          {khoaTeam && <div className="home-advantage home-advantage--indigo"><strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong><span>{khoaTeam.teamName} đồng hành cùng Anh tại Không Gian Tri Thức.</span></div>}
           <button className="button button--secondary" disabled={busy} onClick={onContinue} type="button">BẮT ĐẦU</button>
         </section>
       </PageShell>
@@ -198,12 +198,12 @@ export function HostLevelThree({
   }
 
   if (level.phase === "level_result") {
-    return <LevelResult title="HOÀN THÀNH CHẶNG 03" subtitle="KHÔNG GIAN TRI THỨC" pieceLabel="MẢNH LIÊN MINH 03" results={level.results ?? []} busy={busy} error={error} onReturn={onReturn} />;
+    return <LevelResult pageClassName="level-three-page" title="HOÀN THÀNH CHẶNG 03" subtitle="KHÔNG GIAN TRI THỨC" pieceLabel="MẢNH LIÊN MINH 03" results={level.results ?? []} busy={busy} error={error} onReturn={onReturn} />;
   }
 
   const round = level.currentRound;
   return (
-    <PageShell title="Đố Vui" subtitle={`Chặng 03 · Câu ${level.roundIndex + 1}/2`}>
+    <PageShell className="level-three-page" title="Đố Vui" subtitle={`Chặng 03 · Câu ${level.roundIndex + 1}/2`}>
       <section className="host-riddle-grid">
         <RiddleContent round={round} />
         <div className="host-question-card riddle-question-card">
@@ -254,16 +254,16 @@ export function PlayerLevelThree({
   const feedback = level.reveal?.feedback.find((item) => item.teamId === teamId);
 
   if (level.phase === "intro") {
-    return <PlayerIntro title="Không Gian Tri Thức" subtitle="Đố Vui sắp bắt đầu" teamName={teamName} characterText={`${character?.name ?? ""} · ${character?.role ?? ""}`} advantage={character?.id === "khoa"} seconds={seconds} />;
+    return <PlayerIntro pageClassName="level-three-page" title="Không Gian Tri Thức" subtitle="Đố Vui sắp bắt đầu" teamName={teamName} characterText={`${character?.name ?? ""} · ${character?.role ?? ""}`} advantage={character?.id === "khoa"} seconds={seconds} />;
   }
 
   if (level.phase === "level_result") {
     const result = level.results?.find((item) => item.teamId === teamId);
-    return <PlayerResult title="Mảnh Liên Minh 03" result={result} />;
+    return <PlayerResult pageClassName="level-three-page" title="Mảnh Liên Minh 03" result={result} />;
   }
 
   return (
-    <PageShell compact title={`ĐỐ VUI · CÂU ${level.roundIndex + 1}/2`} subtitle={`${round.points} điểm · ${seconds} giây`}>
+    <PageShell className="level-three-page" compact title={`ĐỐ VUI · CÂU ${level.roundIndex + 1}/2`} subtitle={`${round.points} điểm · ${seconds} giây`}>
       <section className="player-question player-riddle">
         <RiddleContent round={round} />
         <h2>{round.prompt}</h2>
@@ -284,9 +284,9 @@ function RiddleContent({ round }: { round: LevelThreeRoundPublic | null }) {
   return <div className="riddle-stage riddle-story">{round.storyParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>;
 }
 
-function LevelResult({ title, subtitle, pieceLabel, results, busy, error, onReturn }: { title: string; subtitle: string; pieceLabel: string; results: LevelResultPublic[] | null; busy: boolean; error: string | null; onReturn: () => void }) {
+function LevelResult({ title, subtitle, pieceLabel, results, busy, error, onReturn, pageClassName }: { title: string; subtitle: string; pieceLabel: string; results: LevelResultPublic[] | null; busy: boolean; error: string | null; onReturn: () => void; pageClassName?: string }) {
   return (
-    <PageShell title={title} subtitle={subtitle}>
+    <PageShell className={pageClassName} title={title} subtitle={subtitle}>
       <section className="level-results">
         <div className="alliance-piece" aria-label={pieceLabel}>◆</div>
         <h2>{pieceLabel}</h2>
@@ -305,14 +305,14 @@ function LevelResult({ title, subtitle, pieceLabel, results, busy, error, onRetu
   );
 }
 
-function PlayerIntro({ title, subtitle, teamName, characterText, advantage, seconds }: { title: string; subtitle: string; teamName: string; characterText: string; advantage: boolean; seconds: number }) {
+function PlayerIntro({ title, subtitle, teamName, characterText, advantage, seconds, pageClassName }: { title: string; subtitle: string; teamName: string; characterText: string; advantage: boolean; seconds: number; pageClassName?: string }) {
   return (
-    <PageShell compact title={title} subtitle={subtitle}>
+    <PageShell className={pageClassName} compact title={title} subtitle={subtitle}>
       <section className="player-level-state"><span className="factory-icon">◆</span><h2>{teamName}</h2><p>{characterText}</p>{advantage && <strong className="advantage-chip">LỢI THẾ SÂN NHÀ ×2</strong>}<small>{seconds}s</small></section>
     </PageShell>
   );
 }
 
-function PlayerResult({ title, result }: { title: string; result: LevelResultPublic | undefined }) {
-  return <PageShell compact title={title} subtitle="Chặng đã hoàn thành"><section className="player-level-state"><div className="alliance-piece">◆</div><h2>{result?.finalScore ?? 0} điểm</h2><p>Điểm gốc {result?.baseScore ?? 0} × {result?.multiplier ?? 1}</p><p>Tổng tích lũy: <b>{result?.accumulatedTotalScore ?? 0}</b></p><strong>Chờ MC trở về bản đồ hành trình.</strong></section></PageShell>;
+function PlayerResult({ title, result, pageClassName }: { title: string; result: LevelResultPublic | undefined; pageClassName?: string }) {
+  return <PageShell className={pageClassName} compact title={title} subtitle="Chặng đã hoàn thành"><section className="player-level-state"><div className="alliance-piece">◆</div><h2>{result?.finalScore ?? 0} điểm</h2><p>Điểm gốc {result?.baseScore ?? 0} × {result?.multiplier ?? 1}</p><p>Tổng tích lũy: <b>{result?.accumulatedTotalScore ?? 0}</b></p><strong>Chờ MC trở về bản đồ hành trình.</strong></section></PageShell>;
 }

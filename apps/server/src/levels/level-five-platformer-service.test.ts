@@ -296,4 +296,40 @@ describe("Level 5 per-team platformer state", () => {
     expect(new Set(progress.map((item) => item?.finishedAt)).size).toBe(7);
     expect(updated.levelFive).toMatchObject({ phase: "level_result", pieceAwarded: true });
   });
+
+  it("lets only the host force-complete while preserving real progress and no fake finish data", async () => {
+    const { service, room } = await startFive(["nam", "linh"]);
+    const progressed = await completeCheckpoint(service, room, 0, 1, 6_000);
+    await expect(
+      service.forceCompleteLevelFive(progressed.roomCode, progressed.teams[0]!.sessionToken, 7_000)
+    ).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+
+    const completed = await service.forceCompleteLevelFive(
+      progressed.roomCode,
+      progressed.hostToken,
+      7_000
+    );
+    expect(completed.levelFive).toMatchObject({ phase: "level_result", pieceAwarded: true });
+    expect(completed.levelFive?.teamProgress[room.teams[0]!.teamId]).toMatchObject({
+      checkpointProgress: 1,
+      finishRank: null,
+      finishBonus: 0
+    });
+    expect(completed.levelFive?.teamProgress[room.teams[1]!.teamId]).toMatchObject({
+      checkpointProgress: 0,
+      finishRank: null,
+      finishBonus: 0
+    });
+    expect(toLobbySnapshot(completed).levelFive?.results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ teamId: room.teams[0]!.teamId, baseScore: 20, finishRank: null, finishBonus: 0 }),
+        expect.objectContaining({ teamId: room.teams[1]!.teamId, baseScore: 0, finishRank: null, finishBonus: 0 })
+      ])
+    );
+    await expect(
+      service.reachLevelFiveCheckpoint(completed.roomCode, completed.teams[1]!.sessionToken, 1, 7_001)
+    ).rejects.toMatchObject({ code: "INVALID_PHASE" });
+    const ready = await service.returnLevelFiveToMap(completed.roomCode, completed.hostToken);
+    await expect(service.startLevelSix(ready.roomCode, ready.hostToken, 8_000)).resolves.toMatchObject({ phase: "level_6" });
+  });
 });

@@ -46,7 +46,7 @@ async function winRound(service: LobbyService, room: Awaited<ReturnType<LobbySer
 describe("Level 2 two-round image reveal", () => {
   it("starts Round 1 with 1000 points", async () => {
     const { room } = await startLevelTwo();
-    expect(room.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 0, openedTiles: [], currentReward: 1000 });
+    expect(room.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 0, openedTiles: [], currentReward: 1000, deadlineAt: 154_500 });
   });
 
   it("reveals one random hidden tile and decreases reward by 100", async () => {
@@ -73,12 +73,28 @@ describe("Level 2 two-round image reveal", () => {
   });
 
   it("keeps an incorrect guess in the active round and applies cooldown", async () => {
-    const { service, room } = await startLevelTwo();
+    const { service, room } = await startLevelTwo(["an", "khoa"]);
     const challenge = LEVEL_TWO_CHALLENGES[0];
     const updated = await service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, "sai rồi", 125_000);
     expect(updated.levelTwo?.phase).toBe("round_active");
     expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(0);
     await expect(service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, challenge.keyword, 125_500)).rejects.toMatchObject({ code: "GUESS_COOLDOWN" });
+  });
+
+  it("ends the round early after every connected team has submitted", async () => {
+    const { service, room } = await startLevelTwo(["an", "khoa"]);
+    const challenge = LEVEL_TWO_CHALLENGES[0];
+    let updated = await service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, "sai một", 125_000);
+    updated = await service.submitLevelTwoAnswer(updated.roomCode, updated.teams[1]!.sessionToken, challenge.id, "sai hai", 125_001);
+    expect(updated.levelTwo).toMatchObject({ phase: "round_complete", roundWinnerTeamId: null, roundReward: 0, deadlineAt: null });
+  });
+
+  it("does not let a disconnected pending team block early completion", async () => {
+    const { service, room } = await startLevelTwo(["an", "khoa"]);
+    const challenge = LEVEL_TWO_CHALLENGES[0];
+    await service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, "sai", 125_000);
+    const [change] = await service.disconnect("socket-1", 125_100);
+    expect(change?.state.levelTwo).toMatchObject({ phase: "round_complete", deadlineAt: null });
   });
 
   it("lets the Host reveal the answer when nobody guesses correctly", async () => {
