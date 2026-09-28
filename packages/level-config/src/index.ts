@@ -23,7 +23,7 @@ export const LEVELS = [
   },
   {
     id: "level-2",
-    title: "Ô Ăn Quan Tri Thức",
+    title: "Đuổi Hình Bắt Chữ",
     homeCharacterId: HOME_CHARACTER_BY_LEVEL["level-2"],
     durationSeconds: 80,
     allowedChallengeTypes: ["classification", "target_selection"],

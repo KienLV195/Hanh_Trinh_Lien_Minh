@@ -186,12 +186,26 @@ function HostLobby({ roomCode }: { roomCode: string }) {
     }
   };
 
-  const revealLevelTwoTile = async (tileIndex: number) => {
+  const revealLevelTwoTile = async () => {
     if (!credentials) return;
     setBusy(true);
     setError(null);
     try {
-      const result = await socketStore.revealLevelTwoTile(credentials, tileIndex);
+      const result = await socketStore.revealLevelTwoTile(credentials);
+      setSnapshot(result.snapshot);
+    } catch (reason) {
+      setError(messageOf(reason));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const revealLevelTwoAnswer = async () => {
+    if (!credentials) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await socketStore.revealLevelTwoAnswer(credentials);
       setSnapshot(result.snapshot);
     } catch (reason) {
       setError(messageOf(reason));
@@ -252,7 +266,7 @@ function HostLobby({ roomCode }: { roomCode: string }) {
   }
 
   if (snapshot?.phase === "level_2") {
-    return <HostLevelTwo snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(2, "continue")} onRevealTile={(tileIndex) => void revealLevelTwoTile(tileIndex)} onReturn={() => void runLevelAction(2, "return")} />;
+    return <HostLevelTwo snapshot={snapshot} busy={busy} error={error} onContinue={() => void runLevelAction(2, "continue")} onRevealAnswer={() => void revealLevelTwoAnswer()} onRevealTile={() => void revealLevelTwoTile()} onReturn={() => void runLevelAction(2, "return")} />;
   }
 
   if (snapshot?.phase === "level_3") {

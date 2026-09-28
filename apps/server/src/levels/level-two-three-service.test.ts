@@ -49,23 +49,27 @@ describe("Level 2 two-round image reveal", () => {
     expect(room.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 0, openedTiles: [], currentReward: 1000 });
   });
 
-  it("reveals a tile once and decreases reward by 100", async () => {
+  it("reveals one random hidden tile and decreases reward by 100", async () => {
     const { service, room } = await startLevelTwo();
-    const opened = await service.revealLevelTwoTile(room.roomCode, room.hostToken, 7);
-    expect(opened.levelTwo).toMatchObject({ openedTiles: [7], currentReward: 900 });
-    await expect(service.revealLevelTwoTile(room.roomCode, room.hostToken, 7)).rejects.toMatchObject({ code: "TILE_ALREADY_OPEN" });
+    const opened = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
+    expect(opened.levelTwo?.openedTiles).toHaveLength(1);
+    expect(opened.levelTwo?.openedTiles[0]).toBeGreaterThanOrEqual(0);
+    expect(opened.levelTwo?.openedTiles[0]).toBeLessThan(4);
+    expect(opened.levelTwo?.currentReward).toBe(900);
   });
 
-  it("allows all ten tiles and never reduces reward below zero", async () => {
+  it("opens all four tiles without duplicates and stops when none remain", async () => {
     const { service, room } = await startLevelTwo();
     let updated = room;
-    for (let tileIndex = 0; tileIndex < 10; tileIndex += 1) updated = await service.revealLevelTwoTile(updated.roomCode, updated.hostToken, tileIndex);
-    expect(updated.levelTwo).toMatchObject({ openedTiles: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], currentReward: 0 });
+    for (let count = 0; count < 4; count += 1) updated = await service.revealLevelTwoTile(updated.roomCode, updated.hostToken);
+    expect(new Set(updated.levelTwo?.openedTiles)).toEqual(new Set([0, 1, 2, 3]));
+    expect(updated.levelTwo?.currentReward).toBe(600);
+    await expect(service.revealLevelTwoTile(updated.roomCode, updated.hostToken)).rejects.toMatchObject({ code: "TILE_ALREADY_OPEN" });
   });
 
   it("rejects Player authorization for tile reveal", async () => {
     const { service, room } = await startLevelTwo();
-    await expect(service.revealLevelTwoTile(room.roomCode, room.teams[0]!.sessionToken, 0)).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    await expect(service.revealLevelTwoTile(room.roomCode, room.teams[0]!.sessionToken)).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 
   it("keeps an incorrect guess in the active round and applies cooldown", async () => {
@@ -75,6 +79,21 @@ describe("Level 2 two-round image reveal", () => {
     expect(updated.levelTwo?.phase).toBe("round_active");
     expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(0);
     await expect(service.submitLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken, challenge.id, challenge.keyword, 125_500)).rejects.toMatchObject({ code: "GUESS_COOLDOWN" });
+  });
+
+  it("lets the Host reveal the answer when nobody guesses correctly", async () => {
+    const { service, room } = await startLevelTwo();
+    const challenge = LEVEL_TWO_CHALLENGES[0]!;
+    const revealed = await service.revealLevelTwoAnswer(room.roomCode, room.hostToken, 125_000);
+    expect(revealed.levelTwo).toMatchObject({ phase: "round_complete", roundWinnerTeamId: null, roundReward: 0 });
+    expect(revealed.levelTwo?.roundResults).toHaveLength(0);
+    expect(toLobbySnapshot(revealed).levelTwo?.reveal).toEqual({ keyword: challenge.keyword, winnerTeamId: null, winnerTeamName: null });
+    await expect(service.submitLevelTwoAnswer(revealed.roomCode, revealed.teams[0]!.sessionToken, challenge.id, challenge.keyword, 125_001)).rejects.toMatchObject({ code: "GAME_ALREADY_COMPLETED" });
+  });
+
+  it("rejects Player authorization for answer reveal", async () => {
+    const { service, room } = await startLevelTwo();
+    await expect(service.revealLevelTwoAnswer(room.roomCode, room.teams[0]!.sessionToken)).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 
   it("finishes Round 1 without completing Level 2 and locks later submissions", async () => {
@@ -96,7 +115,7 @@ describe("Level 2 two-round image reveal", () => {
 
   it("moves to Round 2 and resets board and reward", async () => {
     const { service, room } = await startLevelTwo();
-    let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken, 2);
+    let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
     updated = await winRound(service, updated, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
     expect(updated.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 1, openedTiles: [], currentReward: 1000, roundWinnerTeamId: null });
@@ -114,7 +133,7 @@ describe("Level 2 two-round image reveal", () => {
 
   it("keeps Round 1 winner points in Round 2", async () => {
     const { service, room } = await startLevelTwo();
-    let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken, 0);
+    let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
     updated = await winRound(service, updated, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
     expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(900);
@@ -124,7 +143,7 @@ describe("Level 2 two-round image reveal", () => {
     const { service, room } = await startLevelTwo(["an", "khoa"]);
     let updated = await winRound(service, room, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
-    updated = await service.revealLevelTwoTile(updated.roomCode, updated.hostToken, 0);
+    updated = await service.revealLevelTwoTile(updated.roomCode, updated.hostToken);
     updated = await winRound(service, updated, 1, 127_000);
     expect(updated.levelTwo?.roundResults.map((result) => result.winnerTeamId)).toEqual([room.teams[0]!.teamId, room.teams[1]!.teamId]);
   });
@@ -145,7 +164,9 @@ describe("Level 2 two-round image reveal", () => {
 
   it("does not leak answers before a round is complete", async () => {
     const { room } = await startLevelTwo();
-    const serialized = JSON.stringify(toLobbySnapshot(room).levelTwo);
+    const publicLevel = toLobbySnapshot(room).levelTwo;
+    const serialized = JSON.stringify(publicLevel);
+    expect(publicLevel?.currentChallenge?.hint).toBe(LEVEL_TWO_CHALLENGES[0]!.hint);
     expect(serialized).not.toContain(LEVEL_TWO_CHALLENGES[0]!.keyword);
     expect(serialized).not.toContain("acceptedAnswers");
   });

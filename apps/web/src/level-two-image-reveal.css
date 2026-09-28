@@ -48,7 +48,7 @@
 .image-reveal-board > img {
   display: block;
   width: 100%;
-  aspect-ratio: 5 / 2;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border: 3px solid #6f5635;
   border-radius: 28px;
@@ -57,24 +57,37 @@
   position: absolute;
   inset: 16px 64px;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
   overflow: hidden;
   border-radius: 28px;
 }
-.reveal-tile-grid button {
+.reveal-tile-grid--vertical {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+}
+.reveal-tile {
   display: grid;
   place-items: center;
   border: 1px solid rgba(85, 94, 52, .55);
-  border-radius: 0;
   background: linear-gradient(145deg, rgba(255, 245, 198, .98), rgba(216, 190, 124, .98));
   color: #486142;
-  cursor: pointer;
-  transition: opacity 220ms ease, transform 220ms ease, filter 160ms ease;
+  transition: opacity 320ms ease, transform 320ms ease;
 }
-.reveal-tile-grid button:hover:not(:disabled) { z-index: 1; filter: brightness(1.08); transform: scale(1.02); }
-.reveal-tile-grid button span { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 900; }
-.reveal-tile-grid button.is-open { pointer-events: none; opacity: 0; transform: scale(.92); }
+.reveal-tile span { font-family: var(--font-display); font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 900; }
+.reveal-tile.is-open { opacity: 0; transform: scale(.92); }
+.random-reveal-control {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.level-two-host-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.random-reveal-control .button { min-width: min(100%, 260px); }
+.button--answer { border: 1px solid #a65d4a; background: rgba(255, 247, 239, .95); color: #8a4638; }
+.button--answer:hover:not(:disabled) { background: #f6dfd4; }
+.random-reveal-control span { color: #596956; font-size: .9rem; font-weight: 800; }
+.no-winner-note { padding: 9px 13px; border-radius: 12px; background: #f4e1d5; color: #7c4437; font-weight: 800; }
 .round-winner-card {
   display: grid;
   justify-items: center;
@@ -97,6 +110,8 @@
 .level-two-player-card { display: grid; justify-items: stretch; gap: 18px; text-align: center; }
 .round-badge { justify-self: center; padding: 8px 14px; border: 1px solid #a99969; border-radius: 999px; background: #edf0dc; color: #3f5d42; font-weight: 900; letter-spacing: .08em; }
 .level-two-player-card .eyebrow { margin: 0; }
+.keyword-hint { display: grid; gap: 6px; margin: 0; padding: 14px 16px; border: 1px solid rgba(169, 153, 105, .55); border-radius: 14px; background: rgba(255, 249, 228, .82); color: #4b5c47; font-size: .98rem; font-weight: 650; line-height: 1.55; }
+.keyword-hint span { color: #806126; font-size: .76rem; font-weight: 900; letter-spacing: .12em; }
 .keyword-pattern { max-width: 100%; color: #294d38; font-size: clamp(26px, 7vw, 46px); font-weight: 900; letter-spacing: 3px; line-height: 1.35; overflow-wrap: normal; word-break: keep-all; white-space: normal; }
 .player-round-reward { color: #806126; font-size: clamp(1.8rem, 7vw, 3rem); font-variant-numeric: tabular-nums; }
 .keyword-guess-form { display: grid; gap: 12px; }
@@ -112,11 +127,11 @@
   .image-reveal-board::before, .image-reveal-board::after { width: 36px; }
   .image-reveal-board::before { left: -19px; }
   .image-reveal-board::after { right: -19px; }
-  .image-reveal-board > img { aspect-ratio: 5 / 3; border-radius: 16px; }
+  .image-reveal-board > img { aspect-ratio: 16 / 9; border-radius: 16px; }
   .reveal-tile-grid { inset: 10px 24px; border-radius: 16px; }
   .round-winner-card { padding: 18px; }
   .keyword-guess-form .button { width: 100%; min-height: 50px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal-tile-grid button { transition: none; }
+  .reveal-tile { transition: none; }
 }

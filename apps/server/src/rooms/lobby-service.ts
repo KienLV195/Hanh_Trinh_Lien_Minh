@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { randomInt, randomUUID } from "node:crypto";
 import { getHomeCharacterId, isCharacterId, LEVEL_IDS, MAX_LEVEL_BASE_SCORE, type CharacterId, type LevelId } from "@htlm/game-domain";
 import type { LevelFourSubmission, LevelSixSubmission, LobbySnapshot, LobbyTeamPublic, ProtocolErrorPayload, TeamScorePublic } from "@htlm/protocol";
 import type { RoomState, RoomStateStore } from "./room-state-store.js";
@@ -77,8 +77,8 @@ export function toLobbySnapshot(state: RoomState): LobbySnapshot {
   const levelTwoWinner = levelTwo?.roundWinnerTeamId
     ? state.teams.find((team) => team.teamId === levelTwo.roundWinnerTeamId)
     : undefined;
-  const levelTwoReveal = levelTwo?.phase === "round_complete" && challenge && levelTwoWinner
-    ? { keyword: challenge.keyword, winnerTeamId: levelTwoWinner.teamId, winnerTeamName: levelTwoWinner.teamName }
+  const levelTwoReveal = levelTwo?.phase === "round_complete" && challenge
+    ? { keyword: challenge.keyword, winnerTeamId: levelTwoWinner?.teamId ?? null, winnerTeamName: levelTwoWinner?.teamName ?? null }
     : null;
   const levelTwoResults = levelTwo?.phase === "level_result" ? createResults(state, levelTwo.baseScores, "level-2") : null;
   const levelThree = state.levelThree;
@@ -168,6 +168,7 @@ export function toLobbySnapshot(state: RoomState): LobbySnapshot {
             ? {
                 id: challenge.id,
                 image: challenge.image,
+                hint: challenge.hint,
                 keywordPattern: createKeywordPattern(challenge.keyword),
                 demo: true
               }
@@ -599,21 +600,41 @@ export class LobbyService {
     return updated;
   }
 
-  async revealLevelTwoTile(roomCode: string, hostToken: string, tileIndex: number): Promise<RoomState> {
+  async revealLevelTwoTile(roomCode: string, hostToken: string): Promise<RoomState> {
     const updated = await this.store.mutateByCode(normalizeRoomCode(roomCode), (state) => {
       this.#requireHost(state, hostToken);
       const level = state.levelTwo;
       if (state.phase !== "level_2" || !level || level.phase !== "round_active") {
         throw new LobbyError("GAME_ALREADY_COMPLETED", "Lượt hiện tại không nhận thao tác mở ô.");
       }
-      if (!Number.isInteger(tileIndex) || tileIndex < 0 || tileIndex > 9) {
-        throw new LobbyError("INVALID_OPTION", "Ô bí mật không hợp lệ.");
-      }
-      if (level.openedTiles.includes(tileIndex)) {
-        throw new LobbyError("TILE_ALREADY_OPEN", "Ô bí mật này đã được mở.");
-      }
+      const hiddenTiles = [0, 1, 2, 3].filter((tileIndex) => !level.openedTiles.includes(tileIndex));
+      if (hiddenTiles.length === 0) throw new LobbyError("TILE_ALREADY_OPEN", "Cả 4 mảnh hình đã được mở.");
+      const tileIndex = hiddenTiles[randomInt(hiddenTiles.length)]!;
       const openedTiles = [...level.openedTiles, tileIndex];
       return bump({ ...state, levelTwo: { ...level, openedTiles, currentReward: Math.max(0, 1000 - openedTiles.length * 100) } });
+    });
+    if (!updated) throw new LobbyError("ROOM_NOT_FOUND", "Không tìm thấy phòng.");
+    return updated;
+  }
+
+  async revealLevelTwoAnswer(roomCode: string, hostToken: string, now = Date.now()): Promise<RoomState> {
+    const updated = await this.store.mutateByCode(normalizeRoomCode(roomCode), (state) => {
+      this.#requireHost(state, hostToken);
+      const level = state.levelTwo;
+      if (state.phase !== "level_2" || !level || level.phase !== "round_active") {
+        throw new LobbyError("GAME_ALREADY_COMPLETED", "Lượt hiện tại không thể hiển thị đáp án.");
+      }
+      return bump({
+        ...state,
+        levelTwo: {
+          ...level,
+          phase: "round_complete",
+          phaseStartedAt: now,
+          deadlineAt: null,
+          roundWinnerTeamId: null,
+          roundReward: 0
+        }
+      });
     });
     if (!updated) throw new LobbyError("ROOM_NOT_FOUND", "Không tìm thấy phòng.");
     return updated;

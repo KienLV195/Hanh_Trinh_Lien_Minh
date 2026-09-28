@@ -147,9 +147,15 @@ class SocketStore {
     );
   }
 
-  revealLevelTwoTile(credentials: HostRoomCredentials, tileIndex: number): Promise<{ snapshot: LobbySnapshot }> {
+  revealLevelTwoTile(credentials: HostRoomCredentials): Promise<{ snapshot: LobbySnapshot }> {
     return this.#acknowledge((acknowledge) =>
-      this.#socket.emit("host.levelTwo.revealTile", { ...credentials, tileIndex }, acknowledge)
+      this.#socket.emit("host.levelTwo.revealTile", credentials, acknowledge)
+    );
+  }
+
+  revealLevelTwoAnswer(credentials: HostRoomCredentials): Promise<{ snapshot: LobbySnapshot }> {
+    return this.#acknowledge((acknowledge) =>
+      this.#socket.emit("host.levelTwo.revealAnswer", credentials, acknowledge)
     );
   }
 

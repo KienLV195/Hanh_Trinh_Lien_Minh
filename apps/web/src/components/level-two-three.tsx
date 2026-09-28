@@ -4,9 +4,9 @@ import type { LevelResultPublic, LevelThreeRoundPublic, LobbySnapshot } from "@h
 import { PageShell } from "./page-shell";
 
 function useSeconds(deadlineAt: number | null): number {
-  const calculate = () => deadlineAt ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000)) : 0;
-  const [seconds, setSeconds] = useState(calculate);
+  const [seconds, setSeconds] = useState(() => deadlineAt ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000)) : 0);
   useEffect(() => {
+    const calculate = () => deadlineAt ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000)) : 0;
     setSeconds(calculate());
     if (!deadlineAt) return;
     const timer = window.setInterval(() => setSeconds(calculate()), 200);
@@ -20,6 +20,7 @@ export function HostLevelTwo({
   busy,
   error,
   onContinue,
+  onRevealAnswer,
   onRevealTile,
   onReturn
 }: {
@@ -27,7 +28,8 @@ export function HostLevelTwo({
   busy: boolean;
   error: string | null;
   onContinue: () => void;
-  onRevealTile: (tileIndex: number) => void;
+  onRevealAnswer: () => void;
+  onRevealTile: () => void;
   onReturn: () => void;
 }) {
   const level = snapshot.levelTwo;
@@ -37,12 +39,12 @@ export function HostLevelTwo({
 
   if (level.phase === "intro") {
     return (
-      <PageShell title="Đồng Quê Xanh" subtitle="Chặng 02 · Ô Ăn Quan Tri Thức">
+      <PageShell title="Đồng Quê Xanh" subtitle="Chặng 02 · Đuổi Hình Bắt Chữ">
         <section className="level-intro level-intro--field">
           <div className="field-mark" aria-hidden="true"><span>▰</span><span>▰</span><span>▰</span></div>
           <span className="eyebrow">SÂN NHÀ CỦA AN · {seconds}s</span>
-          <h2>Ô ĂN QUAN TRI THỨC</h2>
-          <p>2 lượt đoán hình · mở ô để hé lộ ảnh · đội đoán đúng đầu tiên nhận điểm.</p>
+          <h2>ĐUỔI HÌNH BẮT CHỮ</h2>
+          <p>2 lượt đoán hình · mỗi lượt có 4 mảnh gợi ý được mở ngẫu nhiên · đội đoán đúng đầu tiên nhận điểm.</p>
           {anTeam && <div className="home-advantage home-advantage--green"><strong>LỢI THẾ SÂN NHÀ ×2 ĐIỂM</strong><span>{anTeam.teamName} đồng hành cùng An tại Đồng Quê Xanh.</span></div>}
           <button className="button button--secondary" disabled={busy} onClick={onContinue} type="button">TIẾP TỤC</button>
         </section>
@@ -58,24 +60,37 @@ export function HostLevelTwo({
   const roundResult = level.roundResults.find((result) => result.round === level.currentRound);
   const completed = level.phase === "round_complete";
   return (
-    <PageShell title="Ô Ăn Quan Tri Thức" subtitle={`Chặng 02 · Lượt ${level.currentRound}/2`}>
+    <PageShell title="Đuổi Hình Bắt Chữ" subtitle={`Chặng 02 · Lượt ${level.currentRound}/2`}>
       <section className="host-board-grid level-two-reveal-host">
         <header className="level-two-scorebar"><span>LƯỢT {level.currentRound} / 2</span><strong>{level.currentReward} ĐIỂM</strong><small>{level.guessedTeamIds.length}/{snapshot.teamCount} đội đã đoán</small></header>
-        <div className={`image-reveal-board${completed ? " is-complete" : ""}`} aria-label={`Bàn Ô Ăn Quan lượt ${level.currentRound}`}>
+        <div className={`image-reveal-board${completed ? " is-complete" : ""}`} aria-label={`Ảnh đuổi hình bắt chữ lượt ${level.currentRound}`}>
           {challenge && <img alt={`Ảnh bí mật lượt ${level.currentRound}`} src={challenge.image} />}
-          <div className="reveal-tile-grid">
-            {Array.from({ length: 10 }, (_, tileIndex) => {
+          <div className={`reveal-tile-grid${level.currentRound === 2 ? " reveal-tile-grid--vertical" : ""}`}>
+            {Array.from({ length: 4 }, (_, tileIndex) => {
               const opened = completed || level.openedTiles.includes(tileIndex);
-              return <button aria-label={`Mở ô ${tileIndex + 1}`} className={opened ? "is-open" : ""} disabled={busy || opened} key={tileIndex} onClick={() => onRevealTile(tileIndex)} type="button"><span>?</span></button>;
+              return <div aria-hidden={opened} className={`reveal-tile${opened ? " is-open" : ""}`} key={tileIndex}><span>?</span></div>;
             })}
           </div>
         </div>
-        {completed && roundResult && (
+        {!completed && (
+          <div className="random-reveal-control">
+            <div className="level-two-host-actions">
+              <button className="button button--secondary" disabled={busy || level.openedTiles.length >= 4} onClick={onRevealTile} type="button">
+                {level.openedTiles.length >= 4 ? "ĐÃ MỞ CẢ 4 MẢNH" : "MỞ NGẪU NHIÊN 1 MẢNH"}
+              </button>
+              <button className="button button--answer" disabled={busy} onClick={onRevealAnswer} type="button">HIỂN THỊ ĐÁP ÁN</button>
+            </div>
+            <span>{level.openedTiles.length} / 4 mảnh đã mở · Người chơi vẫn có thể đoán bất cứ lúc nào</span>
+          </div>
+        )}
+        {completed && (
           <div className="round-winner-card">
             <span className="eyebrow">LƯỢT {level.currentRound} HOÀN THÀNH</span>
-            <h2>ĐỘI {roundResult.winnerTeamName} ĐÃ ĐOÁN ĐÚNG</h2>
+            <h2>{roundResult ? `ĐỘI ${roundResult.winnerTeamName} ĐÃ ĐOÁN ĐÚNG` : "CHƯA CÓ ĐỘI ĐOÁN ĐÚNG"}</h2>
             <p>TỪ KHÓA <strong>{level.reveal?.keyword}</strong></p>
-            <div className="round-score-detail"><span>Điểm đoán hình <b>{roundResult.baseReward}</b></span>{roundResult.multiplier === 2 && <span>Sân nhà An <b>×2</b></span>}<span>Tổng nhận <b>{roundResult.awardedScore}</b></span></div>
+            {roundResult
+              ? <div className="round-score-detail"><span>Điểm đoán hình <b>{roundResult.baseReward}</b></span>{roundResult.multiplier === 2 && <span>Sân nhà An <b>×2</b></span>}<span>Tổng nhận <b>{roundResult.awardedScore}</b></span></div>
+              : <p className="no-winner-note">MC đã chủ động hiển thị đáp án · Không cộng điểm lượt này</p>}
             <button className="button button--primary" disabled={busy} onClick={onContinue} type="button">{level.currentRound === 1 ? "LƯỢT TIẾP THEO" : "HOÀN THÀNH CHẶNG"}</button>
           </div>
         )}
@@ -102,16 +117,16 @@ export function PlayerLevelTwo({
 }) {
   const level = snapshot.levelTwo;
   const seconds = useSeconds(level?.deadlineAt ?? null);
+  const [guess, setGuess] = useState("");
+  const cooldownSeconds = useSeconds(level?.cooldownUntilByTeam[teamId] ?? null);
+  useEffect(() => setGuess(""), [level?.currentChallenge?.id]);
   if (!level) return null;
   const ownTeam = snapshot.teams.find((team) => team.teamId === teamId);
   const character = CHARACTERS.find((item) => item.id === ownTeam?.characterId);
-  const [guess, setGuess] = useState("");
-  const cooldownSeconds = useSeconds(level.cooldownUntilByTeam[teamId] ?? null);
   const wrongGuess = Boolean(level.cooldownUntilByTeam[teamId]);
-  useEffect(() => setGuess(""), [level.currentChallenge?.id]);
 
   if (level.phase === "intro") {
-    return <PlayerIntro title="Đồng Quê Xanh" subtitle="Ô Ăn Quan Tri Thức sắp bắt đầu" teamName={teamName} characterText={`${character?.name ?? ""} · ${character?.role ?? ""}`} advantage={character?.id === "an"} seconds={seconds} />;
+    return <PlayerIntro title="Đồng Quê Xanh" subtitle="Đuổi Hình Bắt Chữ sắp bắt đầu" teamName={teamName} characterText={`${character?.name ?? ""} · ${character?.role ?? ""}`} advantage={character?.id === "an"} seconds={seconds} />;
   }
 
   if (level.phase === "level_result") {
@@ -128,6 +143,7 @@ export function PlayerLevelTwo({
         <span className="round-badge">LƯỢT {level.currentRound} / 2</span>
         {!completed ? <>
           <span className="eyebrow">TỪ KHÓA BÍ MẬT</span>
+          <p className="keyword-hint"><span>GỢI Ý</span>{challenge?.hint}</p>
           <strong className="keyword-pattern">{challenge?.keywordPattern}</strong>
           <strong className="player-round-reward">{level.currentReward} ĐIỂM</strong>
           <form className="keyword-guess-form" onSubmit={(event) => { event.preventDefault(); if (challenge && guess.trim() && cooldownSeconds === 0 && !busy) onAnswer(challenge.id, guess); }}>
@@ -135,10 +151,10 @@ export function PlayerLevelTwo({
             <button className="button button--primary" disabled={busy || cooldownSeconds > 0 || !guess.trim()} type="submit">GỬI ĐÁP ÁN</button>
           </form>
           {wrongGuess && <p className="guess-feedback"><strong>CHƯA CHÍNH XÁC</strong><span>{cooldownSeconds > 0 ? `Thử lại sau ${cooldownSeconds} giây...` : "Hãy quan sát thêm!"}</span></p>}
-          <p className="opened-tile-count">{level.openedTiles.length} / 10 Ô ĐÃ MỞ</p>
+          <p className="opened-tile-count">{level.openedTiles.length} / 4 MẢNH GỢI Ý ĐÃ MỞ</p>
         </> : <div className={`personal-feedback ${ownRoundResult ? "is-correct" : "is-wrong"}`}>
-          <strong>{ownRoundResult ? "CHÍNH XÁC!" : "ĐÁP ÁN ĐÃ ĐƯỢC TÌM RA"}</strong>
-          <span>{ownRoundResult ? `+${ownRoundResult.awardedScore} ĐIỂM` : `Đội ${level.reveal?.winnerTeamName} đã đoán đúng.`}</span>
+          <strong>{ownRoundResult ? "CHÍNH XÁC!" : level.reveal?.winnerTeamName ? "ĐÁP ÁN ĐÃ ĐƯỢC TÌM RA" : "MC ĐÃ HIỂN THỊ ĐÁP ÁN"}</strong>
+          <span>{ownRoundResult ? `+${ownRoundResult.awardedScore} ĐIỂM` : level.reveal?.winnerTeamName ? `Đội ${level.reveal.winnerTeamName} đã đoán đúng.` : "Không có đội nhận điểm ở lượt này."}</span>
           <p>Từ khóa: <b>{level.reveal?.keyword}</b></p>
           {level.currentRound === 1 && <small>Đang chờ MC bắt đầu lượt tiếp theo...</small>}
         </div>}

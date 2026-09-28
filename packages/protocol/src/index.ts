@@ -139,6 +139,7 @@ export type LevelTwoPhase = "intro" | "round_active" | "round_complete" | "level
 export interface LevelTwoChallengePublic {
   id: string;
   image: string;
+  hint: string;
   keywordPattern: string;
   demo: true;
 }
@@ -158,7 +159,7 @@ export interface LevelTwoPublicState {
   roundReward: number | null;
   guessedTeamIds: TeamId[];
   cooldownUntilByTeam: Record<TeamId, number>;
-  reveal: null | { keyword: string; winnerTeamId: TeamId; winnerTeamName: string };
+  reveal: null | { keyword: string; winnerTeamId: TeamId | null; winnerTeamName: string | null };
   roundResults: Array<{ round: 1 | 2; winnerTeamId: TeamId; winnerTeamName: string; baseReward: number; multiplier: 1 | 2; awardedScore: number }>;
   results: LevelResultPublic[] | null;
   pieceAwarded: boolean;
@@ -376,7 +377,11 @@ export interface ClientToServerEvents {
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "host.levelTwo.revealTile": (
-    payload: HostRoomCredentials & { tileIndex: number },
+    payload: HostRoomCredentials,
+    acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
+  ) => void;
+  "host.levelTwo.revealAnswer": (
+    payload: HostRoomCredentials,
     acknowledge: (result: Acknowledgement<{ snapshot: LobbySnapshot }>) => void
   ) => void;
   "host.levelTwo.returnToMap": (

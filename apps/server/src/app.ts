@@ -256,7 +256,19 @@ export async function buildServer(config: ServerConfig): Promise<FastifyInstance
     socket.on("host.levelTwo.revealTile", (payload, acknowledge) => {
       void (async () => {
         try {
-          const room = await lobbyService.revealLevelTwoTile(payload.roomCode, payload.hostToken, payload.tileIndex);
+          const room = await lobbyService.revealLevelTwoTile(payload.roomCode, payload.hostToken);
+          const snapshot = publishAndSchedule(room);
+          acknowledge({ ok: true, data: { snapshot } });
+        } catch (error) {
+          acknowledge(failure(error));
+        }
+      })();
+    });
+
+    socket.on("host.levelTwo.revealAnswer", (payload, acknowledge) => {
+      void (async () => {
+        try {
+          const room = await lobbyService.revealLevelTwoAnswer(payload.roomCode, payload.hostToken);
           const snapshot = publishAndSchedule(room);
           acknowledge({ ok: true, data: { snapshot } });
         } catch (error) {

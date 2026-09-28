@@ -14,7 +14,7 @@ export interface JourneyArea {
 export const MAP_SIZE = { width: 3200, height: 1800 };
 export const JOURNEY_AREAS: readonly JourneyArea[] = [
   { levelId: "level-1", characterId: "minh", title: "XƯỞNG CÔNG NGHỆ", futureGame: "Vòng quay tri thức", x: 450, y: 1160, accent: 0x497ca1, icon: "⚙" },
-  { levelId: "level-2", characterId: "an", title: "ĐỒNG QUÊ XANH", futureGame: "Ô ăn quan tri thức", x: 690, y: 490, accent: 0x567a46, icon: "♧" },
+  { levelId: "level-2", characterId: "an", title: "ĐỒNG QUÊ XANH", futureGame: "Đuổi hình bắt chữ", x: 690, y: 490, accent: 0x567a46, icon: "♧" },
   { levelId: "level-3", characterId: "khoa", title: "KHÔNG GIAN TRI THỨC", futureGame: "Giải mã mảnh ghép", x: 1350, y: 400, accent: 0x756596, icon: "▤" },
   { levelId: "level-4", characterId: "linh", title: "PHỐ GIAO THƯƠNG", futureGame: "Chợ phiên kết nối", x: 1430, y: 1120, accent: 0xba6b59, icon: "▱" },
   { levelId: "level-5", characterId: "nam", title: "SÂN HỘI LÀNG", futureGame: "Hành trình vượt thử thách", x: 2080, y: 1140, accent: 0xb67b35, icon: "⚑" },
