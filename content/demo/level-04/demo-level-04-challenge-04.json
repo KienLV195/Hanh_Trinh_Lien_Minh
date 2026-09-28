@@ -1,0 +1,1 @@
+{"id":"demo-level-04-challenge-04","type":"matching","prompt":"Ghép thông tin với ký hiệu.","leftItems":["Điểm nhận hàng","Lối vào","Khu tái chế"],"rightItems":["Mũi tên vào cổng","Biểu tượng tái chế","Biểu tượng kiện hàng"],"solution":[3,1,2],"explanation":"Demo matching.","demo":true}

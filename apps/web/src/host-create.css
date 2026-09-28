@@ -1,0 +1,105 @@
+.host-create {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  align-items: center;
+  justify-items: start;
+  padding: clamp(24px, 5vw, 80px);
+  overflow-x: clip;
+  background: url("/background/background-home.png") center / cover no-repeat;
+  color: #304638;
+}
+
+.host-create__panel {
+  width: min(44vw, 540px);
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid rgba(155, 139, 92, .52);
+  border-radius: 8px 26px 26px 8px;
+  background: rgba(255, 247, 221, .82);
+  box-shadow: 0 22px 54px rgba(69, 67, 39, .18);
+  backdrop-filter: blur(4px);
+}
+
+.host-create__wordmark,
+.host-create__capacity {
+  color: #556847;
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.host-create__panel h1 {
+  margin: 2px 0 0;
+  color: #304a35;
+  font-family: inherit;
+  font-size: clamp(2.2rem, 4.2vw, 4.2rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.host-create__description {
+  max-width: 34ch;
+  margin: 0 0 4px;
+  color: #50604b;
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.55;
+}
+
+.host-create__button {
+  min-width: min(100%, 250px);
+  min-height: 54px;
+  margin-top: 5px;
+  border-color: #526849;
+  background: #526849;
+  color: #fff9e8;
+  box-shadow: 0 8px 18px rgba(70, 88, 59, .2);
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.host-create__button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #465d3f;
+  box-shadow: 0 12px 24px rgba(70, 88, 59, .28);
+}
+
+.host-create__panel .note { margin: 0; color: #63705a; }
+.host-create__back { margin-top: 4px; border-bottom: 1px solid #728066; color: #536249; font-size: .78rem; font-weight: 800; text-decoration: none; }
+.host-create__back:focus-visible { outline: 3px solid #bc984f; outline-offset: 4px; }
+
+.page-shell:has(.lobby-layout) {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: url("/background/background-home.png") center / cover no-repeat;
+}
+
+.page-shell:has(.lobby-layout) .topbar,
+.page-shell:has(.lobby-layout) .page-heading {
+  text-shadow: 0 1px 8px rgba(255, 249, 223, .9);
+}
+
+.page-shell:has(.lobby-layout) .join-card,
+.page-shell:has(.lobby-layout) .team-panel {
+  border-color: rgba(155, 139, 92, .48);
+  background: rgba(255, 248, 226, .88);
+  box-shadow: 0 18px 44px rgba(69, 67, 39, .16);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 900px) {
+  .host-create { justify-items: center; }
+  .host-create__panel { width: min(88vw, 540px); }
+}
+
+@media (max-width: 600px) {
+  .host-create { align-items: start; padding: 28px 16px; background-position: 57% center; }
+  .host-create__panel { width: 100%; margin-top: 7vh; padding: 28px 22px 32px; border-radius: 18px; }
+  .host-create__button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .host-create__button { transition: none; }
+}

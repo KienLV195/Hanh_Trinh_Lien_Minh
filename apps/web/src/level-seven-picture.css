@@ -1,0 +1,52 @@
+.host-picture-word-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, .85fr);
+  gap: clamp(16px, 2vw, 30px);
+  width: min(1500px, 100%);
+  min-height: min(64vh, 660px);
+  margin: 0 auto;
+  padding: clamp(14px, 2vw, 24px);
+  border: 1px solid #c9c09a;
+  border-radius: 24px;
+  background: rgba(239, 231, 202, .72);
+  box-shadow: 0 18px 42px rgba(82, 72, 42, .12);
+}
+
+.picture-clues {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  align-content: center;
+  min-width: 0;
+  padding: clamp(14px, 2.2vw, 28px);
+  border: 1px solid #c9c09a;
+  border-top: 7px solid #a4607b;
+  border-radius: 20px;
+  background: rgba(255, 248, 229, .96);
+}
+
+.picture-clues--1 { grid-template-columns: minmax(0, 540px); justify-content: center; }
+.picture-clues figure { margin: 0; overflow: hidden; border-radius: 18px 12px 20px 10px; background: #fff7df; box-shadow: 0 12px 28px rgba(82, 72, 42, .14); }
+.picture-clues img { display: block; width: 100%; aspect-ratio: 16 / 10.5; object-fit: contain; }
+.picture-team-feedback { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.picture-team-feedback span { padding: 6px 9px; border-radius: 8px; font-size: .78rem; font-weight: 800; }
+.picture-team-feedback .is-correct { background: #dfefd7; color: #285b38; }
+.picture-team-feedback .is-wrong { background: #f6e0d5; color: #773c31; }
+
+.player-picture-word { display: grid; gap: 18px; }
+.player-picture-word .picture-clues { padding: 10px; border-top-width: 5px; }
+.player-picture-word h2 { margin: 0; text-align: center; }
+.picture-answer-form { display: grid; gap: 10px; }
+.picture-answer-form label { color: #344439; font-size: .82rem; font-weight: 800; }
+.picture-answer-form input { width: 100%; min-height: 58px; padding: 0 16px; border: 2px solid #b9b28f; border-radius: 12px; background: #fff9e9; color: #2f4136; font-size: 1.1rem; }
+.picture-answer-form input:focus { border-color: #a4607b; outline: 3px solid rgba(164, 96, 123, .2); }
+
+@media (max-width: 900px) {
+  .host-picture-word-grid { grid-template-columns: 1fr; min-height: 0; }
+}
+
+@media (max-width: 600px) {
+  .picture-clues { grid-template-columns: 1fr; }
+  .picture-clues figure { max-height: 220px; }
+  .picture-clues img { max-height: 220px; }
+}

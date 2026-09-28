@@ -1,0 +1,10 @@
+{
+  "id": "demo-level-07-round-01",
+  "type": "picture_word",
+  "prompt": "Hai hình ảnh cùng gợi nhắc đến từ khóa nào?",
+  "imageUrls": ["/level-07/linked-hands.svg", "/level-07/community-circle.svg"],
+  "answer": "đoàn kết",
+  "aliases": ["doan ket"],
+  "explanation": "Đoàn kết là cùng chung sức, đồng lòng vì mục tiêu chung.",
+  "demo": true
+}

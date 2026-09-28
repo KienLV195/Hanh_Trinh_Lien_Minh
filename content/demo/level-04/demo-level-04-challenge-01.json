@@ -1,0 +1,1 @@
+{"id":"demo-level-04-challenge-01","type":"matching","prompt":"Ghép nơi bán với sản phẩm phù hợp.","leftItems":["Quầy rau","Tiệm sách","Cửa hàng bánh"],"rightItems":["Sách và vở","Rau củ tươi","Bánh mới nướng"],"solution":[2,1,3],"explanation":"Demo matching.","demo":true}

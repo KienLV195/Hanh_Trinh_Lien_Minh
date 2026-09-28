@@ -1,0 +1,10 @@
+{
+  "id": "demo-level-03-puzzle-03",
+  "type": "ordering",
+  "prompt": "Sắp xếp chu trình học tập ngắn sau một hoạt động trải nghiệm.",
+  "pieces": ["b", "d", "a", "c"],
+  "solution": ["a", "c", "b", "d"],
+  "explanation": "Quan sát, chia sẻ, rút bài học rồi áp dụng giúp kiến thức trở nên bền hơn.",
+  "points": 40,
+  "demo": true
+}

@@ -1,0 +1,10 @@
+{
+  "id": "demo-level-07-round-02",
+  "type": "picture_word",
+  "prompt": "Ghép ý nghĩa của hai hình để tìm từ khóa.",
+  "imageUrls": ["/level-07/puzzle-pieces.svg", "/level-07/linked-hands.svg"],
+  "answer": "hợp tác",
+  "aliases": ["hop tac"],
+  "explanation": "Hợp tác là phối hợp khả năng và nguồn lực để cùng hoàn thành công việc.",
+  "demo": true
+}

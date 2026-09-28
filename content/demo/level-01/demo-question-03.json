@@ -1,0 +1,19 @@
+{
+  "id": "demo-question-03",
+  "levelId": "level-1",
+  "type": "single_choice",
+  "contentVersion": "demo-v1",
+  "prompt": "Một tập thể vững mạnh được xây dựng tốt nhất từ điều gì?",
+  "instruction": "Nội dung demo — chọn một đáp án.",
+  "scoringProfileId": "normalized-default",
+  "options": [
+    { "id": "a", "text": "Cạnh tranh bằng mọi giá" },
+    { "id": "b", "text": "Tránh góp ý cho nhau" },
+    { "id": "c", "text": "Hợp tác, tôn trọng và cùng chịu trách nhiệm" },
+    { "id": "d", "text": "Chỉ ghi nhận thành tích cá nhân" }
+  ],
+  "solution": { "correctOptionId": "c" },
+  "demo": true,
+  "points": 40,
+  "explanation": "Hợp tác, tôn trọng và trách nhiệm chung tạo nên sức mạnh bền vững của tập thể."
+}

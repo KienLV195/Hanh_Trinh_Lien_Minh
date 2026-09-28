@@ -1,0 +1,1099 @@
+/* Shared responsive pass: layout only, loaded after every feature stylesheet. */
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: clip;
+}
+
+body {
+  min-width: 320px;
+}
+
+.landing,
+.host-create,
+.page-shell,
+.storybook,
+.journey-review,
+.route-fallback {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+:where(main, section, article, aside, header, footer, nav, div, form),
+:where(.page-shell, .storybook, .journey-review) > * {
+  min-width: 0;
+}
+
+:where(h1, h2, h3, p, strong, span, small, label, button, a) {
+  overflow-wrap: anywhere;
+}
+
+.button,
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+.button {
+  white-space: normal;
+  text-align: center;
+}
+
+.page-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.page-shell > :not(.topbar):not(.page-heading) {
+  width: min(100%, 1500px);
+  margin-inline: auto;
+}
+
+.page-shell .topbar,
+.page-shell .page-heading {
+  width: min(100%, 1500px);
+  margin-inline: auto;
+}
+
+.lobby-layout,
+.host-layout,
+.host-quiz-grid,
+.host-board-grid,
+.host-puzzle-grid,
+.host-market-grid,
+.host-race-grid,
+.host-relay-grid,
+.host-throw-grid,
+.host-picture-word-grid,
+.final-leaderboard,
+.final-ending,
+.lineup-complete {
+  min-width: 0;
+}
+
+/* Keep every image-backed page background on the page root. */
+.landing,
+.host-create,
+.page-shell:has(.lobby-layout),
+.page-shell.page-shell--player,
+.storybook.storybook--player {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.page-shell.page-shell--player,
+.page-shell.page-shell--player:has(.level-intro),
+.page-shell.page-shell--player:has(.level-results),
+.page-shell.page-shell--player:has(.player-level-state),
+.page-shell.page-shell--player:has(.player-question),
+.page-shell.page-shell--player:has(.player-journey-waiting),
+.page-shell.page-shell--player:has(.finale-convergence),
+.page-shell.page-shell--player:has(.final-leaderboard),
+.page-shell.page-shell--player:has(.final-ending),
+.storybook.storybook--player {
+  background-color: #dfe3c4;
+  background-image: url("/background/background-fea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Host lobby and general two-column shells use the available desktop width. */
+.lobby-layout {
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+  width: min(100%, 1320px);
+}
+
+.host-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+}
+
+.join-card,
+.team-panel,
+.debug-panel,
+.player-controller,
+.placeholder-state {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.qr-frame {
+  width: min(100%, 220px);
+}
+
+.room-code {
+  max-width: 100%;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  overflow-wrap: normal;
+}
+
+.team-slot strong,
+.lineup-pair strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Shared gameplay containers expand on desktop without exceeding readable width. */
+.level-intro,
+.level-results,
+.journey-return {
+  width: min(90vw, 1200px);
+  max-width: 100%;
+}
+
+.player-question,
+.player-level-state,
+.player-complete,
+.waiting-card {
+  max-width: min(100%, 1020px);
+}
+
+.host-quiz-grid,
+.host-board-grid,
+.host-puzzle-grid,
+.host-market-grid,
+.host-race-grid,
+.host-relay-grid,
+.host-throw-grid,
+.host-picture-word-grid {
+  width: min(100%, 1500px);
+  max-width: 100%;
+}
+
+.host-question-card,
+.market-stage,
+.race-field,
+.relay-campus,
+.festival-target,
+.puzzle-stage,
+.o-an-quan-board,
+.picture-clues {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.host-options > div,
+.result-row,
+.market-pairs span,
+.pair-ribbons span,
+.team-order span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.race-lane strong,
+.relay-teams b {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relay-path {
+  min-width: 0;
+}
+
+.relay-path span {
+  min-width: 0;
+}
+
+/* Phaser map always preserves the artwork's 16:9 composition. */
+.journey-review,
+.journey-experience {
+  width: 100%;
+  min-width: 0;
+}
+
+.journey-review__stage {
+  width: min(100%, calc((100dvh - 180px) * 16 / 9));
+  max-width: 1600px;
+}
+
+.journey-review .phaser-frame,
+.journey-review .phaser-canvas {
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+}
+
+.journey-review .phaser-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+.journey-focus,
+.alliance-center-overlay,
+.journey-complete,
+.journey-map-error {
+  overflow-wrap: anywhere;
+}
+
+/* Finale and leaderboard remain fluid and scroll vertically with the page. */
+.finale-convergence,
+.final-leaderboard,
+.final-ending {
+  width: min(100%, 1500px);
+  max-width: 100%;
+}
+
+.final-podium,
+.final-ranking,
+.final-ranking-rows,
+.rank-card,
+.rank-row,
+.personal-final-result,
+.final-character-lineup {
+  min-width: 0;
+}
+
+.rank-card > *,
+.rank-row > * {
+  min-width: 0;
+}
+
+.final-character-lineup img,
+.rank-character img,
+.personal-final-character img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Laptop and tablet landscape. */
+@media (max-width: 1100px) {
+  .page-shell {
+    padding-inline: clamp(16px, 3vw, 30px);
+  }
+
+  .lobby-layout {
+    grid-template-columns: minmax(210px, 260px) minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .host-board-grid,
+  .host-puzzle-grid {
+    grid-template-columns: minmax(250px, .9fr) minmax(0, 1.1fr);
+  }
+
+  .o-an-quan-board {
+    grid-template-columns: minmax(58px, 72px) minmax(0, 1fr) minmax(58px, 72px);
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .quan-space {
+    min-height: clamp(150px, 23vw, 220px);
+  }
+
+  .small-spaces > div {
+    min-height: 94px;
+  }
+
+  .host-market-grid,
+  .host-race-grid,
+  .host-relay-grid,
+  .host-throw-grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+  }
+
+  .host-picture-word-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+  }
+
+  .final-podium {
+    gap: 10px;
+  }
+
+  .rank-card {
+    grid-template-columns: minmax(78px, .5fr) minmax(0, 1fr);
+  }
+
+  .rank-row {
+    grid-template-columns: 44px 64px minmax(0, 1fr) minmax(80px, .55fr) auto;
+  }
+}
+
+/* Tablet portrait and compact laptop content. */
+@media (max-width: 850px) {
+  .topbar,
+  .storybook__topbar,
+  .journey-review__header {
+    gap: 10px;
+  }
+
+  .lobby-layout,
+  .host-layout,
+  .host-quiz-grid,
+  .host-board-grid,
+  .host-puzzle-grid,
+  .host-market-grid,
+  .host-race-grid,
+  .host-relay-grid,
+  .host-throw-grid,
+  .host-picture-word-grid,
+  .journey-return {
+    grid-template-columns: 1fr;
+  }
+
+  .lobby-layout {
+    width: min(100%, 680px);
+  }
+
+  .join-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .host-quiz-grid,
+  .host-board-grid,
+  .host-puzzle-grid,
+  .host-market-grid,
+  .host-race-grid,
+  .host-relay-grid,
+  .host-throw-grid,
+  .host-picture-word-grid {
+    min-height: 0;
+  }
+
+  .knowledge-wheel {
+    width: min(62vw, 340px);
+    margin-inline: auto;
+  }
+
+  .o-an-quan-board {
+    grid-template-columns: minmax(64px, 82px) minmax(0, 1fr) minmax(64px, 82px);
+  }
+
+  .relay-campus,
+  .festival-target {
+    min-height: 280px;
+  }
+
+  .final-podium {
+    grid-template-columns: 1fr;
+    width: min(100%, 620px);
+    margin-inline: auto;
+  }
+
+  .final-ranking-rows {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-card {
+    grid-template-columns: minmax(100px, 150px) minmax(0, 1fr);
+  }
+
+  .rank-character {
+    height: clamp(125px, 22vh, 180px);
+  }
+
+  .final-character-lineup {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Phones: stack controls and let the page scroll naturally. */
+@media (max-width: 600px) {
+  .landing,
+  .host-create,
+  .page-shell,
+  .storybook,
+  .journey-review {
+    padding-inline: 12px;
+  }
+
+  .landing {
+    min-height: 100dvh;
+    align-items: start;
+    padding-block: 24px;
+  }
+
+  .landing__copy {
+    width: 100%;
+    max-width: 540px;
+  }
+
+  .landing__actions,
+  .host-options,
+  .player-options,
+  .choice-grid,
+  .order-tray,
+  .matching-grid,
+  .board-target-options,
+  .mobile-targets {
+    grid-template-columns: 1fr;
+  }
+
+  .landing__actions .button,
+  .join-form .button,
+  .player-question > .button,
+  .player-level-state > .button,
+  .companion-actions .button,
+  .journey-focus__actions .button,
+  .alliance-center-overlay .button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .topbar,
+  .storybook__topbar {
+    min-height: 52px;
+    flex-wrap: wrap;
+  }
+
+  .page-heading {
+    padding-block: 18px;
+  }
+
+  .page-heading h1,
+  .storybook__heading h1 {
+    font-size: clamp(1.65rem, 9vw, 2.45rem);
+  }
+
+  .lobby-card,
+  .waiting-card,
+  .team-panel,
+  .lineup-complete,
+  .player-complete,
+  .player-level-state,
+  .player-question,
+  .level-intro,
+  .level-results,
+  .journey-return,
+  .finale-convergence,
+  .final-leaderboard,
+  .final-ending {
+    width: 100%;
+    max-width: 100%;
+    padding: clamp(18px, 5vw, 26px);
+  }
+
+  .join-card {
+    grid-template-columns: 1fr;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .qr-frame,
+  .join-card__label,
+  .room-code,
+  .join-card__url {
+    grid-row: auto;
+    justify-self: center;
+  }
+
+  .team-panel__heading,
+  .selection-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .team-panel__heading .button,
+  .selection-heading .button {
+    width: 100%;
+  }
+
+  .team-slot {
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .team-slot .presence {
+    display: none;
+  }
+
+  .lineup-list {
+    grid-template-columns: 1fr;
+  }
+
+  .level-intro h2,
+  .level-results h2 {
+    font-size: clamp(1.8rem, 11vw, 3rem);
+  }
+
+  .factory-mark,
+  .knowledge-mark,
+  .factory-icon {
+    font-size: clamp(3.4rem, 18vw, 5rem);
+  }
+
+  .host-question-card {
+    padding: 18px;
+  }
+
+  .host-question-card h2 {
+    padding-right: 58px;
+    font-size: clamp(1.25rem, 6vw, 1.8rem);
+  }
+
+  .quiz-timer {
+    top: 14px;
+    right: 14px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .quiz-timer strong {
+    font-size: 1.25rem;
+  }
+
+  .o-an-quan-board {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .quan-space {
+    min-height: 64px;
+    border-radius: 22px;
+  }
+
+  .small-spaces > div {
+    min-height: 82px;
+    padding: 9px;
+  }
+
+  .market-pairs {
+    grid-template-columns: 1fr;
+  }
+
+  .market-pairs > b {
+    transform: rotate(90deg);
+  }
+
+  .race-field {
+    padding: 58px 12px 18px;
+  }
+
+  .race-lane {
+    grid-template-columns: minmax(62px, 82px) minmax(0, 1fr) 30px;
+    gap: 6px;
+    font-size: .76rem;
+  }
+
+  .relay-campus,
+  .festival-target {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .relay-path {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .relay-path span,
+  .relay-path span:first-child,
+  .relay-path span:last-child {
+    width: 100%;
+    height: 46px;
+    min-width: 0;
+    border-radius: 14px;
+    font-size: .6rem;
+  }
+
+  .relay-teams {
+    height: auto;
+    min-height: 150px;
+    overflow: hidden;
+  }
+
+  .relay-teams b {
+    font-size: .72rem;
+  }
+
+  .festival-target {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .festival-target > div {
+    width: min(100%, 112px);
+    aspect-ratio: 1;
+    height: auto;
+    border-width: 8px;
+  }
+
+  .picture-clues {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .picture-clues figure,
+  .picture-clues img {
+    max-height: none;
+  }
+
+  .result-row {
+    display: grid;
+    gap: 4px;
+  }
+
+  .answer-locked,
+  .personal-feedback {
+    padding: 18px;
+  }
+
+  .finale-alliance-symbol {
+    width: min(210px, 70vw);
+    height: min(210px, 70vw);
+  }
+
+  .rank-card {
+    grid-template-columns: minmax(82px, 110px) minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .rank-row {
+    grid-template-columns: 34px 48px minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .rank-row small {
+    display: none;
+  }
+
+  .rank-row em {
+    font-size: .78rem;
+    white-space: nowrap;
+  }
+
+  .personal-final-result {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .personal-final-character {
+    grid-row: auto;
+    height: 190px;
+  }
+
+  .final-character-lineup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .final-character-lineup .character-visual {
+    height: clamp(130px, 38vw, 170px);
+  }
+
+  /* On narrow screens the map remains 16:9; detail panels flow beneath it. */
+  .journey-review {
+    padding-block: 10px 16px;
+  }
+
+  .journey-review--host {
+    display: block;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+
+  .journey-review__header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .journey-review__stage,
+  .journey-review--host .journey-review__stage {
+    display: grid;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .journey-focus,
+  .journey-focus--interactive,
+  .journey-focus--level-7,
+  .alliance-center-overlay,
+  .journey-complete,
+  .journey-map-error {
+    position: static;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    margin: 10px;
+  }
+
+  .journey-focus {
+    padding: 12px;
+    animation: none;
+  }
+
+  .journey-focus p {
+    font-size: .78rem;
+  }
+
+  .journey-map-error {
+    order: 10;
+  }
+
+  .journey-navigation {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journey-navigation__label {
+    grid-column: 1 / -1;
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .journey-navigation button {
+    width: 100%;
+  }
+}
+
+/* Short laptops: reduce chrome, never squeeze the actual game into a phone column. */
+@media (min-width: 851px) and (max-height: 820px) {
+  .page-shell {
+    padding-bottom: 20px;
+  }
+
+  .page-shell .topbar,
+  .storybook__topbar {
+    min-height: 46px;
+  }
+
+  .page-shell .page-heading,
+  .storybook__heading {
+    padding-block: 10px;
+    margin-block: 8px;
+  }
+
+  .host-quiz-grid,
+  .host-board-grid,
+  .host-puzzle-grid,
+  .host-market-grid,
+  .host-race-grid,
+  .host-relay-grid,
+  .host-throw-grid,
+  .host-picture-word-grid {
+    min-height: 0;
+  }
+
+  .level-intro,
+  .level-results {
+    padding: 24px;
+  }
+
+  .finale-convergence {
+    min-height: 0;
+  }
+}
+
+/* /join only: the page owns the background; the form remains a readable card. */
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) {
+  width: 100%;
+  min-width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0 clamp(24px, 5vw, 80px) clamp(28px, 5vw, 56px);
+  overflow-x: clip;
+  background-color: #dfe3c4;
+  background-image: url("/background/background-fea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .topbar {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .page-heading,
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .join-form {
+  width: min(46vw, 820px);
+  max-width: 820px;
+  margin-inline: 0;
+}
+
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .page-heading {
+  margin-top: clamp(28px, 7vh, 76px);
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .page-heading p {
+  margin-left: 0;
+}
+
+.page-shell.page-shell--player.page-shell--compact:has(.join-form) .join-form {
+  padding: clamp(24px, 3vw, 38px);
+  border: 1px solid rgba(184, 168, 113, .76);
+  border-radius: 24px;
+  background: rgba(255, 248, 226, .88);
+  box-shadow: 0 20px 52px rgba(64, 67, 38, .16), inset 0 1px rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 767px) {
+  .page-shell.page-shell--player.page-shell--compact:has(.join-form) {
+    width: 100%;
+    min-width: 100%;
+    padding: 0 12px 24px;
+  }
+
+  .page-shell.page-shell--player.page-shell--compact:has(.join-form) .page-heading,
+  .page-shell.page-shell--player.page-shell--compact:has(.join-form) .join-form {
+    width: 100%;
+    max-width: none;
+  }
+
+  .page-shell.page-shell--player.page-shell--compact:has(.join-form) .page-heading {
+    margin-top: clamp(22px, 7vh, 54px);
+  }
+
+  .page-shell.page-shell--player.page-shell--compact:has(.join-form) .join-form {
+    padding: 22px 18px 24px;
+    border-radius: 20px;
+  }
+}
+
+/* /play Player roots: remove the old 1080/1500px page-width cap, not card caps. */
+.page-shell.page-shell--player.page-shell--compact,
+.storybook.storybook--player {
+  width: 100%;
+  min-width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.page-shell.page-shell--player,
+.storybook.storybook--player {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #dfe3c4;
+  background-image: url("/background/background-fea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Vietnamese-safe typography: no bundled font exists, so use the native Unicode stack. */
+html,
+body,
+#root,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.landing h1,
+.page-heading h1,
+.storybook__heading h1,
+.companion-preview h2,
+.character-card h3,
+.journey-review__header h1,
+.journey-focus h2,
+.journey-focus strong,
+.journey-complete strong,
+.alliance-center-overlay,
+.finale-convergence,
+.final-leaderboard,
+.final-ending,
+.rank-card,
+.personal-final-result,
+.final-character-lineup {
+  font-family: var(--font-display);
+}
+
+/* Matching cards: persistent, non-hover feedback for mouse and touch. */
+.page-shell--player .matching-grid button {
+  position: relative;
+  padding-right: 5.8rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.page-shell--player .matching-grid button.is-selected,
+.page-shell--player .matching-grid button.is-selected:hover {
+  z-index: 1;
+  border-color: #365f47;
+  outline: 3px solid rgba(54, 95, 71, .2);
+  background: #edf1d9;
+  box-shadow: 0 10px 22px rgba(48, 70, 52, .2);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.page-shell--player .matching-grid button.is-selected::after {
+  content: "ĐÃ CHỌN";
+  position: absolute;
+  top: 50%;
+  right: .75rem;
+  color: #365f47;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  transform: translateY(-50%);
+}
+
+.page-shell--player .matching-grid button.is-matched,
+.page-shell--player .matching-grid button.is-matched:disabled {
+  border-color: #5c8455;
+  background: #e3efd6;
+  color: #2e5234;
+  box-shadow: inset 4px 0 #5c8455;
+  cursor: default;
+  opacity: 1;
+  filter: none;
+}
+
+.page-shell--player .matching-grid button.is-matched::after {
+  content: "✓ ĐÃ GHÉP";
+  position: absolute;
+  top: 50%;
+  right: .75rem;
+  color: #37613c;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+  transform: translateY(-50%);
+}
+
+.page-shell--player .matching-grid button.is-wrong {
+  border-color: #a85f50;
+  background: #f6e0d5;
+  color: #773c31;
+  animation: match-card-shake 320ms ease;
+}
+
+.page-shell--player .matching-grid button:disabled:not(.is-matched) {
+  cursor: not-allowed;
+}
+
+@keyframes match-card-shake {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-4px); }
+  70% { transform: translateX(4px); }
+}
+
+@media (max-width: 600px) {
+  .page-shell--player .matching-grid button {
+    min-height: 64px;
+    padding-right: 5.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-shell--player .matching-grid button.is-wrong {
+    animation: none;
+  }
+}
+
+/* Shared Host gameplay surface: Level 1–7 and non-ranking finale states. */
+.page-shell.page-shell--host:has(.level-intro),
+.page-shell.page-shell--host:has(.level-results),
+.page-shell.page-shell--host:has(.journey-return),
+.page-shell.page-shell--host:has(.host-quiz-grid),
+.page-shell.page-shell--host:has(.host-board-grid),
+.page-shell.page-shell--host:has(.host-puzzle-grid),
+.page-shell.page-shell--host:has(.host-market-grid),
+.page-shell.page-shell--host:has(.host-race-grid),
+.page-shell.page-shell--host:has(.host-relay-grid),
+.page-shell.page-shell--host:has(.host-throw-grid),
+.page-shell.page-shell--host:has(.host-picture-word-grid),
+.page-shell.page-shell--host:has(.finale-convergence),
+.page-shell.page-shell--host:has(.final-ending) {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background-color: #d9dec1;
+  background-image: url("/background/background-host.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Keep headings and primary gameplay cards legible over the illustrated scene. */
+.page-shell.page-shell--host:has(.level-intro) .page-heading,
+.page-shell.page-shell--host:has(.level-results) .page-heading,
+.page-shell.page-shell--host:has(.journey-return) .page-heading,
+.page-shell.page-shell--host:has([class^="host-"]) .page-heading,
+.page-shell.page-shell--host:has(.finale-convergence) .page-heading,
+.page-shell.page-shell--host:has(.final-ending) .page-heading {
+  background: rgba(255, 249, 225, .92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.page-shell.page-shell--host :where(
+  .level-intro,
+  .level-results,
+  .journey-return,
+  .host-question-card,
+  .puzzle-stage,
+  .market-stage,
+  .race-field,
+  .relay-campus,
+  .festival-target,
+  .picture-clues,
+  .finale-convergence,
+  .final-ending
+) {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Host leaderboard is the sole finale state that returns to the Home artwork. */
+.page-shell.page-shell--host:has(.final-leaderboard) {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background-color: #e2e2bd;
+  background-image: url("/background/background-home.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.page-shell.page-shell--host:has(.final-leaderboard) .page-heading,
+.page-shell.page-shell--host:has(.final-leaderboard) .final-leaderboard {
+  background: rgba(255, 249, 225, .92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}

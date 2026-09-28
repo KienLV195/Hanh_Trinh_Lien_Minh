@@ -1,0 +1,11 @@
+{
+  "id": "demo-level-02-challenge-04",
+  "type": "target_selection",
+  "prompt": "Chọn nhóm phù hợp với nội dung sau",
+  "statement": "Một ruộng thử nghiệm giảm lãng phí nước bằng tưới đúng lúc, đúng lượng.",
+  "targets": ["a", "b", "c", "d"],
+  "correctTargetId": "a",
+  "explanation": "Tưới đúng lúc, đúng lượng giúp sử dụng tài nguyên hiệu quả hơn.",
+  "points": 25,
+  "demo": true
+}

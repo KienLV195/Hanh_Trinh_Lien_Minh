@@ -1,0 +1,11 @@
+{
+  "id": "demo-level-02-challenge-01",
+  "type": "target_selection",
+  "prompt": "Chọn nhóm phù hợp với nội dung sau",
+  "statement": "Một nhóm gieo trồng theo lịch, ghi lại độ ẩm đất và điều chỉnh tưới nước khi cần.",
+  "targets": ["a", "b", "c", "d"],
+  "correctTargetId": "b",
+  "explanation": "Theo dõi dữ liệu và điều chỉnh quy trình là cách làm phù hợp với nông nghiệp hiện đại.",
+  "points": 25,
+  "demo": true
+}

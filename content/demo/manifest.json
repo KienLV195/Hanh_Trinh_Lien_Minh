@@ -1,0 +1,31 @@
+{
+  "id": "demo-v1",
+  "title": "Demo placeholder content",
+  "description": "Nội dung kỹ thuật để kiểm tra schema. Không phải nội dung học thuật chính thức.",
+  "levels": {
+    "level-1": ["demo-question-01", "demo-question-02", "demo-question-03"],
+    "level-2": [
+      "demo-level-02-challenge-01",
+      "demo-level-02-challenge-02",
+      "demo-level-02-challenge-03",
+      "demo-level-02-challenge-04"
+    ],
+    "level-3": [
+      "demo-level-03-puzzle-01",
+      "demo-level-03-puzzle-02",
+      "demo-level-03-puzzle-03"
+    ],
+    "level-4": [
+      "demo-level-04-challenge-01", "demo-level-04-challenge-02", "demo-level-04-challenge-03", "demo-level-04-challenge-04"
+    ],
+    "level-5": [
+      "demo-level-05-question-01", "demo-level-05-question-02", "demo-level-05-question-03", "demo-level-05-question-04", "demo-level-05-question-05"
+    ],
+    "level-6": [
+      "demo-level-06-station-01", "demo-level-06-station-02", "demo-level-06-station-03", "demo-level-06-station-04"
+    ],
+    "level-7": [
+      "demo-level-07-round-01", "demo-level-07-round-02", "demo-level-07-round-03", "demo-level-07-round-04"
+    ]
+  }
+}

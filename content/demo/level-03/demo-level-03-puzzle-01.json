@@ -1,0 +1,10 @@
+{
+  "id": "demo-level-03-puzzle-01",
+  "type": "ordering",
+  "prompt": "Sắp xếp các bước để một nhóm giải quyết vấn đề chung.",
+  "pieces": ["c", "a", "b"],
+  "solution": ["a", "b", "c"],
+  "explanation": "Xác định vấn đề trước, sau đó trao đổi ý tưởng và thống nhất cách làm.",
+  "points": 30,
+  "demo": true
+}

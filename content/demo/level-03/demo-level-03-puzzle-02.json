@@ -1,0 +1,15 @@
+{
+  "id": "demo-level-03-puzzle-02",
+  "type": "matching",
+  "prompt": "Ghép thuật ngữ với ý nghĩa phù hợp.",
+  "leftItems": ["l1", "l2", "l3"],
+  "rightItems": ["r2", "r3", "r1"],
+  "solution": [
+    { "leftId": "l1", "rightId": "r1" },
+    { "leftId": "l2", "rightId": "r2" },
+    { "leftId": "l3", "rightId": "r3" }
+  ],
+  "explanation": "Mỗi khái niệm mô tả một hành vi tích cực trong làm việc nhóm.",
+  "points": 30,
+  "demo": true
+}

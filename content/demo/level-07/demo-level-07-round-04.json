@@ -1,0 +1,10 @@
+{
+  "id": "demo-level-07-round-04",
+  "type": "picture_word",
+  "prompt": "Hai hình ảnh cùng nói đến hành động nào?",
+  "imageUrls": ["/level-07/open-book.svg", "/level-07/giving-hands.svg"],
+  "answer": "chia sẻ",
+  "aliases": ["chia se"],
+  "explanation": "Chia sẻ tri thức và sự hỗ trợ giúp cộng đồng cùng tiến bộ.",
+  "demo": true
+}

@@ -1,0 +1,42 @@
+{
+  "tool": "Built-in image_gen",
+  "masterPrompt": "Use case: illustration-story. Create ONE production-ready transparent full-body master character PNG for Vietnamese storybook adventure Hành Trình Liên Minh. MASTER STYLE for a cohesive seven-person cast: hand-painted gouache and colored pencil, soft organic shapes, fine warm charcoal broken outlines, subtle paper grain inside painted forms, warm natural Vietnamese skin, expressive small natural eyes, dark hair, about 4.7 heads tall (young adult not chibi), soft upper-left daylight, muted cream/earth clothing with one restrained accent. Near-front three-quarter relaxed standing pose, complete shoes visible, centered on portrait canvas with 7% padding, transparent background, no scenery, no ground, no text, no border. Character MINH, male age 19–20, slightly tall sturdy but not muscular, short natural layered dark hair, calm reliable face. Cream T-shirt, short dusty BLUE technical work jacket with subtle reflective seam, olive-gray work cargo pants, practical work shoes; holds a SMALL handheld technical inspection device. Only these 2–3 role cues. No giant wrench, hardhat, uniform caricature, anime, plastic 3D, vector clipart. Polished Vietnamese children's illustrated adventure, suitable for older school audiences. This image will anchor style for all six companions.",
+  "refinement": "Preserve identity/outfit; simplify gouache rendering, five-head proportions, fully transparent alpha.",
+  "reference": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-97323659-7171-45ff-b35d-ac8ae1accad5.png",
+  "sharedPrompt": "Use case: illustration-story. Reference image is STYLE REFERENCE ONLY (Minh), not target identity. Create ONE DIFFERENT companion for same Vietnamese storybook game. Match reference's painted gouache/pencil texture, warm Vietnamese skin, natural dark eyes, soft broken edges, muted cream/earth palette, upper-left light, complexity. Full-body master pose, entire shoes/head visible, near-front three-quarter view on same portrait 2:3 canvas, 6% padding, transparent alpha background, NO scenery/no text/no ground. Young adult age 16–20, stylized about FIVE heads tall, not chibi or anime, no plastic 3D. Distinct face and silhouette from reference. Character: ",
+  "characters": [
+    [
+      "an",
+      "AN, male 18–19. Slightly shorter, relaxed, approachable optimistic smile, short textured dark hair. Rolled-sleeve sage GREEN work shirt over cream T-shirt, utility pants and practical shoes. Small black-and-cream khăn rằn-inspired checked cloth detail at waist. Holds small tray of seedlings with natural grip. No conical hat or rice bundle; modern agriculture."
+    ],
+    [
+      "khoa",
+      "KHOA, male 19–20, tall slim thoughtful curious silhouette. Neat side-layer dark hair, thin subtle glasses. Casual cream shirt, light muted INDIGO cardigan, straight taupe pants, sneakers. Tablet held at side and small notebook. Natural calm stance. No lab coat or nerd caricature."
+    ],
+    [
+      "linh",
+      "LINH, female 19–20, medium height, confident natural youthful face, shoulder-length dark hair, soft modern blouse, short soft muted CORAL blazer, straight cream trousers, practical clean sneakers. Slim folio under one arm. Relaxed asymmetrical stance. No formal suit, jewelry or CEO/luxury caricature."
+    ],
+    [
+      "nam",
+      "NAM, male 17–18, medium height, friendly energetic face, slightly messy short dark hair. Lightweight dusty ORANGE bomber over cream T-shirt, olive cargo joggers and sneakers, small crossbody bag. One tiny Vietnamese woven-geometric detail on cuff. Natural dynamic step stance, not superhero or leader pose."
+    ],
+    [
+      "vy",
+      "VY, female 18, slightly smaller silhouette, cheerful curious young university student. Dark half-ponytail with loose front strands. Cream polo, soft muted TEAL overshirt, wide taupe pants, sneakers. Small backpack with visible straps and notebook held to side. Clearly youthful adult not schoolchild."
+    ],
+    [
+      "mai",
+      "MAI, female 19–20, medium height, composed warm confident face different from Linh, long dark hair tied low. Modern youthful muted BERRY pink top with subtle Vietnamese-inspired neckline and narrow woven pattern detail, long sand-colored pants, practical low shoes. Small fabric shoulder bag with subtle Vietnamese pattern. Natural grounded stance. Represents active participation in social/community life. No domestic, beauty, motherhood or caregiving imagery."
+    ]
+  ],
+  "sources": {
+    "minh": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-97323659-7171-45ff-b35d-ac8ae1accad5.png",
+    "an": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-cd171be8-6ab5-4b3d-b318-44f9dc8f476a.png",
+    "khoa": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-461612ec-d486-4740-9f43-0e2587d7aaf1.png",
+    "linh": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-4902c38d-8cc3-45fa-a55d-b4fea2a46e6e.png",
+    "nam": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-c362bec6-c5d4-4fc4-bac8-caca566a7ac1.png",
+    "vy": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-9d4da788-02c4-43b0-8c2d-5750aed0f4c1.png",
+    "mai": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486\\exec-1ecc8f11-f707-49cc-9351-3af49362d7a4.png"
+  }
+}

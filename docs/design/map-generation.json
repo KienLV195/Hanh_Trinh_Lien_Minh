@@ -1,0 +1,24 @@
+{
+  "tool": "Built-in image_gen",
+  "style": "Hand-painted gouache, pencil edges, paper texture, warm ochre/terracotta/sage palette; elevated three-quarter view from south; soft morning upper-left light; isolated 3:2 transparent landmark on irregular grassy patch; no UI or characters.",
+  "reference": "workshop",
+  "subjects": {
+    "workshop": "Clean technology workshop, solar roof, conveyor/control panel, knowledge wheel.",
+    "farm": "Greenhouse, vegetable/rice beds, irrigation, bridge, stone O An Quan board.",
+    "knowledge": "Open library pavilion, reading tables, idea/puzzle boards, quiet garden.",
+    "market": "Vietnamese shophouses, awnings, market stalls, packages, delivery bicycle.",
+    "field": "Open village field, banyan, pavilion, bunting, capture-the-flag motif.",
+    "campus": "University library, study courtyard, bicycles, technology and winding relay path.",
+    "festival": "Community gathering stage, patterned fabrics, ribbons, vertical nem con hoop; no domestic stereotypes."
+  },
+  "sourceDirectory": "C:\\Users\\luong\\.codex\\generated_images\\01a0e3a6-e7f7-7eb3-b998-5f8c1bea7486",
+  "sources": {
+    "workshop": "exec-63626e64-8f14-4b83-9775-54992a838735.png",
+    "farm": "exec-c194c27a-8164-4fae-b4d6-38ecc4859f85.png",
+    "knowledge": "exec-be348175-0696-46c8-a9b9-c3f0595026b4.png",
+    "market": "exec-5a7e74c7-4711-4fc7-86f4-cf2ed0395bd0.png",
+    "field": "exec-554d0559-042e-47aa-8459-5cf0ccc9abf8.png",
+    "campus": "exec-4c000cd2-187a-4c36-9d48-4aaaad031044.png",
+    "festival": "exec-b5786dda-3ce7-44e5-aaf4-b50d4dad987c.png"
+  }
+}

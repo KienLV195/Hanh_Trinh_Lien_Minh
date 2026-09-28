@@ -1,0 +1,11 @@
+{
+  "id": "demo-level-02-challenge-02",
+  "type": "target_selection",
+  "prompt": "Chọn nhóm phù hợp với nội dung sau",
+  "statement": "Các thành viên cùng chia khu vực chăm sóc, báo lại tình trạng cây vào cuối buổi.",
+  "targets": ["a", "b", "c", "d"],
+  "correctTargetId": "a",
+  "explanation": "Phân công và báo cáo giúp cả đội phối hợp rõ ràng hơn.",
+  "points": 25,
+  "demo": true
+}

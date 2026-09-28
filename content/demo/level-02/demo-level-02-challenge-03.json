@@ -1,0 +1,11 @@
+{
+  "id": "demo-level-02-challenge-03",
+  "type": "target_selection",
+  "prompt": "Chọn nhóm phù hợp với nội dung sau",
+  "statement": "Trước khi dùng máy móc, đội kiểm tra hướng dẫn an toàn và khu vực xung quanh.",
+  "targets": ["a", "b", "c", "d"],
+  "correctTargetId": "c",
+  "explanation": "Kiểm tra an toàn trước khi vận hành là ưu tiên quan trọng.",
+  "points": 25,
+  "demo": true
+}

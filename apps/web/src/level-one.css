@@ -1,0 +1,686 @@
+.level-intro,
+.level-results,
+.player-level-state,
+.player-question,
+.journey-return {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 250, 240, 0.82);
+  box-shadow: 0 24px 70px rgba(42, 71, 62, 0.14);
+  padding: clamp(24px, 6vw, 64px);
+  text-align: center;
+}
+
+.level-intro h2,
+.level-results h2 {
+  margin: 0.3rem 0;
+  font-size: clamp(2.3rem, 7vw, 5.4rem);
+  letter-spacing: -0.055em;
+}
+
+.factory-mark {
+  display: flex;
+  justify-content: center;
+  color: #da782e;
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.factory-mark span:last-child {
+  margin-left: -0.25em;
+  font-size: 0.65em;
+}
+
+.home-advantage {
+  display: grid;
+  gap: 5px;
+  max-width: 620px;
+  margin: 28px auto;
+  padding: 16px;
+  border: 1px solid #dd9b42;
+  border-radius: 14px;
+  background: #fff1c9;
+  color: #704411;
+}
+
+/* Level 01 Host: compact chrome and a true sibling grid. */
+body .page-shell.page-shell--host:has(.level-one-host-game) {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-height: 100dvh;
+  padding: 0 clamp(18px, 3.2vw, 48px) clamp(14px, 2vh, 24px);
+}
+
+body .page-shell.page-shell--host:has(.level-one-host-game) .topbar {
+  min-height: clamp(46px, 6.5vh, 64px);
+}
+
+body .page-shell.page-shell--host:has(.level-one-host-game) .page-heading {
+  width: min(100%, 1500px);
+  max-width: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  margin: clamp(7px, 1.2vh, 12px) auto clamp(10px, 1.5vh, 16px);
+  padding: 9px clamp(14px, 2vw, 22px);
+  border-radius: 14px;
+  text-align: left;
+}
+
+body .page-shell.page-shell--host:has(.level-one-host-game) .page-heading h1 {
+  font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+body .page-shell.page-shell--host:has(.level-one-host-game) .page-heading p {
+  margin: 0;
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.host-quiz-grid.level-one-host-game {
+  width: min(100%, 1500px);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.38fr) minmax(0, 0.62fr);
+  gap: clamp(18px, 2vw, 32px);
+  align-items: stretch;
+}
+
+.level-one-wheel-stage {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: clamp(8px, 1.5vw, 20px);
+}
+
+.knowledge-wheel {
+  position: relative;
+  width: min(100%, 470px, calc(100dvh - 190px));
+  max-height: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: clamp(10px, 1vw, 16px) solid #f6d48a;
+  border-radius: 50%;
+  box-shadow: 0 24px 60px rgba(54, 47, 30, 0.22);
+  transform: rotate(-15deg);
+}
+
+.knowledge-wheel > div {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: #296f68;
+  color: #fff;
+  font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  font-weight: 900;
+}
+
+.knowledge-wheel > div:nth-child(2),
+.knowledge-wheel > div:nth-child(3) {
+  background: #df7b34;
+}
+
+.knowledge-wheel > span {
+  position: absolute;
+  inset: 33%;
+  display: grid;
+  place-items: center;
+  border: clamp(5px, 0.6vw, 8px) solid #f6d48a;
+  border-radius: 50%;
+  background: #fff8e5;
+  color: #24423d;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 900;
+}
+
+.knowledge-wheel--question_active {
+  animation: wheel-settle 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes wheel-settle {
+  from { transform: rotate(-130deg); }
+  to { transform: rotate(-15deg); }
+}
+
+.wheel-caption {
+  color: #274b43;
+  font-size: clamp(0.72rem, 1vw, 0.88rem);
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.host-question-card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.85);
+  padding: clamp(22px, 4vw, 42px);
+}
+
+.host-question-card h2 {
+  padding-right: 80px;
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+}
+
+.host-question-card.level-one-question-panel {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  align-content: center;
+  gap: clamp(10px, 1.4vh, 16px);
+  padding: clamp(18px, 2vw, 30px);
+  overflow: hidden;
+  border: 1px solid rgba(174, 160, 111, 0.72);
+  border-radius: clamp(24px, 2vw, 30px);
+  background: rgba(255, 248, 224, 0.95);
+  box-shadow: 0 22px 58px rgba(45, 68, 53, 0.18);
+}
+
+.host-question-card.level-one-question-panel h2 {
+  padding-right: 0;
+}
+
+.level-one-question-meta {
+  display: grid;
+  grid-template-columns: auto auto minmax(64px, 76px);
+  align-items: center;
+  justify-content: start;
+  gap: clamp(12px, 2vw, 24px);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(70, 98, 76, 0.18);
+}
+
+.level-one-question-meta > div:not(.quiz-timer) {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: #647269;
+  font-size: clamp(0.68rem, 0.8vw, 0.8rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.level-one-question-meta > div:not(.quiz-timer) strong {
+  color: #254b42;
+  font-size: clamp(1rem, 1.35vw, 1.28rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.quiz-timer {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  border-radius: 50%;
+  background: #213f3a;
+  color: #fff;
+}
+
+.level-one-question-panel .quiz-timer {
+  position: static;
+  justify-self: end;
+  width: clamp(64px, 5vw, 76px);
+  height: clamp(64px, 5vw, 76px);
+  box-shadow: 0 8px 20px rgba(33, 63, 58, 0.22);
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz-timer strong {
+  font-size: 1.7rem;
+  line-height: 0.8;
+}
+
+.quiz-timer span {
+  font-size: 0.55rem;
+  font-weight: 900;
+}
+
+.level-one-question-panel .quiz-timer strong {
+  align-self: end;
+  font-size: clamp(1.55rem, 2vw, 1.9rem);
+  line-height: 1;
+}
+
+.level-one-question-panel .quiz-timer span {
+  align-self: start;
+  letter-spacing: 0.1em;
+}
+
+.host-question-card .level-one-question-copy,
+.level-one-player-game .level-one-question-copy {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  color: #203e38;
+  line-height: 1.28;
+  letter-spacing: -0.025em;
+  text-align: left;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-wrap: pretty;
+}
+
+.host-question-card .question-copy--short { font-size: clamp(1.85rem, 2.3vw, 2.6rem); }
+.host-question-card .question-copy--medium { font-size: clamp(1.65rem, 2vw, 2.25rem); }
+.host-question-card .question-copy--long { font-size: clamp(1.42rem, 1.7vw, 1.94rem); }
+
+.host-options {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 12px);
+}
+
+.host-options > div {
+  min-width: 0;
+  min-height: clamp(64px, 8vh, 88px);
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: clamp(11px, 1.2vw, 15px);
+  border: 1px solid rgba(91, 111, 93, 0.34);
+  border-radius: 13px;
+  background: rgba(255, 253, 244, 0.82);
+  font-size: clamp(0.92rem, 1.05vw, 1.2rem);
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.host-options b,
+.player-options b {
+  flex: none;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e3ede5;
+  color: #244c42;
+  font-size: 0.82rem;
+}
+
+.host-options .is-correct {
+  border-color: #2b8b62;
+  background: #dff2dc;
+}
+
+.level-one-question-footer {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.answer-progress,
+.reveal-note {
+  margin: 18px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: #edf2e7;
+}
+
+.level-one-question-footer .answer-progress,
+.level-one-question-footer .reveal-note {
+  margin: 0;
+  padding: 11px 14px;
+}
+
+.answer-progress {
+  color: #5e6e66;
+  font-size: 0.9rem;
+}
+
+.answer-progress strong { color: #244c42; }
+
+.level-one-question-footer .reveal-note {
+  min-width: 0;
+  font-size: clamp(0.82rem, 0.92vw, 1rem);
+  line-height: 1.42;
+}
+
+.level-one-question-footer .reveal-note p {
+  margin: 4px 0 0;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.level-one-question-footer .button { min-width: 118px; }
+
+.result-table {
+  max-width: 720px;
+  margin: 28px auto;
+  display: grid;
+  gap: 8px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.alliance-piece {
+  color: #de862f;
+  font-size: clamp(5rem, 13vw, 9rem);
+  line-height: 1;
+  text-shadow: 0 12px 32px rgba(222, 134, 47, 0.3);
+}
+
+.player-level-state {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.factory-icon { color: #d97830; font-size: 6rem; }
+
+.advantage-chip {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff0bf;
+  color: #71420f;
+}
+
+/* Level 01 Player: mobile-first answering surface. */
+body .page-shell.page-shell--player:has(.level-one-player-game) {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(12px, 4vw, 24px) max(20px, env(safe-area-inset-bottom));
+}
+
+body .page-shell.page-shell--player:has(.level-one-player-game) .topbar { min-height: 50px; }
+
+body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading {
+  width: min(100%, 720px);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-inline: auto;
+  padding: 14px 2px 12px;
+  text-align: left;
+}
+
+body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading h1 {
+  font-size: clamp(1.25rem, 6vw, 1.7rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading p {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.player-question.level-one-player-game {
+  width: min(100%, 720px);
+  max-width: 720px;
+  margin-inline: auto;
+  padding: clamp(16px, 4.5vw, 26px);
+  border-color: rgba(174, 160, 111, 0.72);
+  border-radius: 22px;
+  background: rgba(255, 248, 224, 0.95);
+  box-shadow: 0 18px 44px rgba(45, 68, 53, 0.16);
+  text-align: left;
+}
+
+.level-one-player-meta {
+  display: grid;
+  grid-template-columns: auto auto minmax(72px, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(70, 98, 76, 0.18);
+  color: #607069;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.level-one-player-meta strong {
+  color: #244c42;
+  font-variant-numeric: tabular-nums;
+}
+
+.level-one-player-timer {
+  justify-self: end;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: #213f3a;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.level-one-player-timer strong { color: inherit; font-size: 1.15rem; }
+
+.level-one-player-game .question-copy--short,
+.level-one-player-game .question-copy--medium,
+.level-one-player-game .question-copy--long {
+  margin-bottom: clamp(18px, 5vw, 26px);
+  font-size: clamp(1.25rem, 5.2vw, 1.62rem);
+  line-height: 1.34;
+}
+
+.player-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.player-question h2 {
+  margin-top: 0;
+  font-size: clamp(1.35rem, 6vw, 2rem);
+}
+
+.player-options button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.level-one-player-game .player-options button {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid rgba(91, 111, 93, 0.36);
+  border-radius: 14px;
+  background: rgba(255, 253, 244, 0.94);
+  color: var(--ink);
+  font-size: clamp(0.94rem, 4vw, 1.04rem);
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.level-one-player-game .player-options button:hover:not(:disabled) {
+  border-color: #587b6d;
+  background: #fffdf4;
+  transform: translateY(-1px);
+}
+
+.level-one-player-game .player-options button:active:not(:disabled) { transform: translateY(1px) scale(0.995); }
+
+.level-one-player-game .player-options button:focus-visible {
+  outline: 3px solid rgba(35, 111, 102, 0.28);
+  outline-offset: 2px;
+}
+
+.level-one-player-game .player-options button:disabled { cursor: default; opacity: 1; }
+
+.level-one-player-game .player-options button.is-selected {
+  border-color: #d17a2c;
+  background: #fff0cc;
+  box-shadow: inset 4px 0 0 #d17a2c;
+}
+
+.level-one-player-game .player-options button.is-correct {
+  border-color: #2b8b62;
+  background: #dff2dc;
+  box-shadow: inset 4px 0 0 #2b8b62;
+}
+
+.answer-locked,
+.personal-feedback {
+  display: grid;
+  gap: 8px;
+  padding: 28px;
+  border-radius: 16px;
+  background: #e8efe6;
+}
+
+.level-one-player-game .answer-locked,
+.level-one-player-game .personal-feedback {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 14px;
+}
+
+.answer-locked strong { color: #244c42; text-transform: none; }
+.personal-feedback.is-correct { background: #def2dc; color: #1d643f; }
+.personal-feedback.is-wrong { background: #f8e4dc; color: #873f31; }
+
+.personal-feedback p {
+  margin: 3px 0 0;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.journey-return {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+  text-align: left;
+}
+
+.journey-return h2 {
+  color: #d47b2b;
+  font-size: clamp(2rem, 6vw, 5rem);
+  letter-spacing: 0.15em;
+}
+
+.next-level {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 24px;
+  border: 1px dashed #d47b2b;
+  border-radius: 18px;
+}
+
+.next-level small { color: var(--muted); }
+
+@media (min-width: 851px) and (max-height: 820px) {
+  body .page-shell.page-shell--host:has(.level-one-host-game) {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .host-question-card.level-one-question-panel { gap: 9px; padding: 16px 20px; }
+  .level-one-question-meta { grid-template-columns: auto auto 62px; padding-bottom: 7px; }
+  .level-one-question-panel .quiz-timer { width: 60px; height: 60px; }
+  .host-question-card .question-copy--short { font-size: clamp(1.65rem, 2vw, 2rem); }
+  .host-question-card .question-copy--medium { font-size: clamp(1.45rem, 1.75vw, 1.75rem); }
+  .host-question-card .question-copy--long { font-size: clamp(1.28rem, 1.55vw, 1.52rem); }
+
+  .host-options > div {
+    min-height: 58px;
+    padding: 9px 11px;
+    font-size: clamp(0.84rem, 0.95vw, 1rem);
+  }
+
+  .reveal-note { padding: 9px 12px; font-size: 0.8rem; }
+}
+
+@media (max-width: 850px) {
+  body .page-shell.page-shell--host:has(.level-one-host-game) { display: block; padding-bottom: 24px; }
+
+  .host-quiz-grid.level-one-host-game,
+  .journey-return {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .host-quiz-grid.level-one-host-game { gap: 18px; }
+  .level-one-wheel-stage { order: 2; }
+
+  .host-question-card.level-one-question-panel {
+    order: 1;
+    height: auto;
+    overflow: visible;
+  }
+
+  .knowledge-wheel { width: min(62vw, 300px); }
+}
+
+@media (max-width: 600px) {
+  body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading { padding-block: 12px 10px; }
+  .player-question.level-one-player-game { padding: 16px; border-radius: 18px; }
+  .level-one-player-meta { margin-bottom: 14px; }
+  .level-one-player-game .player-options { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 380px) {
+  body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading { display: block; }
+
+  body .page-shell.page-shell--player:has(.level-one-player-game) .page-heading p {
+    margin-top: 5px;
+    text-align: left;
+  }
+
+  .level-one-player-meta { grid-template-columns: auto auto 1fr; gap: 7px; font-size: 0.68rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knowledge-wheel--question_active { animation: none; }
+  .level-one-player-game .player-options button { transition: none; }
+}

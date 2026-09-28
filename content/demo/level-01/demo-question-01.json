@@ -1,0 +1,19 @@
+{
+  "id": "demo-question-01",
+  "levelId": "level-1",
+  "type": "single_choice",
+  "contentVersion": "demo-v1",
+  "prompt": "Trong hoạt động nhóm, việc nào giúp mọi người phối hợp hiệu quả hơn?",
+  "instruction": "Nội dung demo — chọn một đáp án.",
+  "scoringProfileId": "normalized-default",
+  "options": [
+    { "id": "a", "text": "Lắng nghe và phân công rõ ràng" },
+    { "id": "b", "text": "Mỗi người tự làm, không trao đổi" },
+    { "id": "c", "text": "Chỉ một người đưa ra mọi quyết định" },
+    { "id": "d", "text": "Trì hoãn nhiệm vụ khó" }
+  ],
+  "solution": { "correctOptionId": "a" },
+  "demo": true,
+  "points": 30,
+  "explanation": "Lắng nghe và phân công rõ ràng giúp tập thể phối hợp và chia sẻ trách nhiệm."
+}

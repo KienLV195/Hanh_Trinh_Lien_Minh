@@ -1,0 +1,19 @@
+{
+  "id": "demo-question-02",
+  "levelId": "level-1",
+  "type": "single_choice",
+  "contentVersion": "demo-v1",
+  "prompt": "Khi vận hành thiết bị tại nơi làm việc, ưu tiên nào nên đặt lên trước?",
+  "instruction": "Nội dung demo — chọn một đáp án.",
+  "scoringProfileId": "normalized-default",
+  "options": [
+    { "id": "a", "text": "Hoàn thành thật nhanh" },
+    { "id": "b", "text": "Tuân thủ quy trình an toàn" },
+    { "id": "c", "text": "Bỏ qua bước kiểm tra" },
+    { "id": "d", "text": "Tự thay đổi hướng dẫn" }
+  ],
+  "solution": { "correctOptionId": "b" },
+  "demo": true,
+  "points": 30,
+  "explanation": "Tuân thủ quy trình an toàn bảo vệ con người, thiết bị và chất lượng công việc."
+}

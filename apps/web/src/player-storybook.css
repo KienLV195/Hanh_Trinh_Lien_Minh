@@ -1,0 +1,319 @@
+/* Player-only visual shell. Gameplay state and component structure stay unchanged. */
+.page-shell--player,
+.storybook--player {
+  --surface: #f6eed8;
+  --surface-strong: #fff9e9;
+  --ink: #304637;
+  --muted: #65705d;
+  --line: #c9bd91;
+  --accent: #75865c;
+  --accent-dark: #485f43;
+  color-scheme: light;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--ink);
+  background-color: #dfe3c4;
+  background-image: url("/background/background-fea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow-x: clip;
+}
+
+/* Remove the former oval clouds and geometric hills from character selection. */
+.storybook--player .storybook__landscape {
+  display: none;
+}
+
+.page-shell--player {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(12px, 3vw, 42px) clamp(24px, 4vw, 48px);
+}
+
+.page-shell--player .topbar,
+.storybook--player .storybook__topbar {
+  width: min(100%, 1050px);
+  min-height: 60px;
+  margin-inline: auto;
+  border-bottom-color: rgba(91, 101, 65, .3);
+}
+
+.page-shell--player .wordmark,
+.storybook--player .storybook__brand,
+.storybook--player .storybook__room {
+  padding: 7px 11px;
+  border: 1px solid rgba(180, 164, 112, .58);
+  border-radius: 10px;
+  background: rgba(255, 248, 226, .78);
+  box-shadow: 0 6px 18px rgba(74, 68, 39, .09);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+.page-shell--player .page-heading,
+.storybook--player .storybook__heading {
+  width: fit-content;
+  max-width: min(100%, 1050px);
+  margin: clamp(14px, 2.5vw, 26px) auto clamp(16px, 2.5vw, 24px);
+  padding: clamp(14px, 2vw, 20px) clamp(18px, 3vw, 30px);
+  border: 1px solid rgba(181, 165, 111, .72);
+  border-radius: 22px;
+  background: rgba(255, 248, 226, .84);
+  box-shadow: 0 14px 34px rgba(68, 67, 38, .13), inset 0 1px rgba(255, 255, 255, .62);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  text-align: center;
+}
+
+.page-shell--player .page-heading h1,
+.storybook--player .storybook__heading h1 {
+  color: #314b38;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.page-shell--player .page-heading p,
+.storybook--player .storybook__heading p {
+  margin: 6px auto 0;
+  color: #647059;
+  font-weight: 750;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.page-shell--player > :not(.topbar):not(.page-heading) {
+  width: min(100%, 1020px);
+  margin-inline: auto;
+}
+
+.page-shell--player .lobby-card,
+.page-shell--player .waiting-card,
+.page-shell--player .player-complete,
+.page-shell--player .player-level-state,
+.page-shell--player .player-question,
+.page-shell--player .finale-convergence,
+.page-shell--player .final-leaderboard,
+.page-shell--player .final-ending,
+.storybook--player .companion-preview {
+  border: 1px solid rgba(184, 168, 113, .76);
+  border-radius: clamp(20px, 2.5vw, 28px);
+  background: rgba(255, 248, 226, .88);
+  color: #304637;
+  box-shadow: 0 20px 52px rgba(64, 67, 38, .16), inset 0 1px rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.page-shell--player .join-form,
+.page-shell--player > .lobby-card,
+.page-shell--player .waiting-card {
+  width: min(100%, 620px);
+}
+
+.page-shell--player .join-form {
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.page-shell--player .waiting-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 7px;
+  padding: clamp(26px, 5vw, 44px);
+  text-align: center;
+}
+
+.page-shell--player .waiting-card::before {
+  content: "◆";
+  grid-column: 1;
+  grid-row: auto;
+  color: #b8883d;
+  font-size: clamp(3.4rem, 9vw, 5.4rem);
+  line-height: 1;
+  text-shadow: 0 10px 26px rgba(178, 130, 55, .25);
+}
+
+.page-shell--player .waiting-card > * {
+  grid-column: 1;
+  justify-self: center;
+}
+
+.page-shell--player .waiting-card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  color: #314b38;
+}
+
+.page-shell--player .waiting-card__status {
+  margin-top: 8px;
+  color: #52624f;
+}
+
+.page-shell--player .waiting-card__count {
+  margin: 18px auto 12px;
+}
+
+.page-shell--player .player-level-state,
+.page-shell--player .player-question {
+  max-width: 950px;
+  margin-inline: auto;
+  padding: clamp(22px, 4vw, 42px);
+}
+
+.page-shell--player .player-question h2,
+.page-shell--player .player-level-state h2 {
+  color: #304637;
+  text-wrap: balance;
+}
+
+.page-shell--player .player-options button,
+.page-shell--player .choice-grid button,
+.page-shell--player .order-tray button,
+.page-shell--player .matching-grid button,
+.page-shell--player .mobile-targets button,
+.page-shell--player .picture-answer-form input {
+  border-color: #c6ba91;
+  background: rgba(255, 251, 237, .94);
+  color: #304637;
+}
+
+.page-shell--player .player-complete {
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.page-shell--player .finale-convergence,
+.page-shell--player .final-leaderboard,
+.page-shell--player .final-ending {
+  width: min(100%, 1020px);
+}
+
+.storybook--player {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(12px, 3vw, 42px) max(20px, env(safe-area-inset-bottom));
+}
+
+.storybook--player .companion-preview,
+.storybook--player .companion-chooser,
+.storybook--player .companion-actions {
+  width: min(100%, 1020px);
+  margin-inline: auto;
+}
+
+.storybook--player .companion-preview {
+  padding: clamp(14px, 2vw, 24px);
+}
+
+.storybook--player .companion-chooser {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid rgba(184, 168, 113, .62);
+  border-radius: 18px;
+  background: rgba(255, 248, 226, .74);
+  box-shadow: 0 14px 36px rgba(64, 67, 38, .12);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+}
+
+.storybook--player .companion-actions {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(184, 168, 113, .62);
+  border-radius: 16px;
+  background: rgba(255, 248, 226, .9);
+  box-shadow: 0 12px 30px rgba(64, 67, 38, .12);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+}
+
+/* Host/map gameplay keeps its layout; only the text label gains contrast. */
+.page-shell--host:has(.level-intro) .page-heading,
+.page-shell--host:has(.level-results) .page-heading,
+.page-shell--host:has([class^="host-"]) .page-heading,
+.page-shell--host:has(.finale-convergence) .page-heading,
+.page-shell--host:has(.final-leaderboard) .page-heading,
+.page-shell--host:has(.final-ending) .page-heading {
+  width: fit-content;
+  max-width: min(100%, 760px);
+  margin: 14px auto;
+  padding: 12px 20px;
+  border: 1px solid rgba(181, 165, 111, .66);
+  border-radius: 18px;
+  background: rgba(255, 248, 226, .84);
+  box-shadow: 0 10px 28px rgba(68, 67, 38, .11);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.journey-review__header > div {
+  padding: 8px 12px;
+  border: 1px solid rgba(181, 165, 111, .56);
+  border-radius: 12px;
+  background: rgba(255, 248, 226, .82);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+@media (min-width: 768px) {
+  .page-shell--player .player-options,
+  .page-shell--player .choice-grid,
+  .page-shell--player .order-tray {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .page-shell--player .topbar,
+  .storybook--player .storybook__topbar {
+    min-height: 52px;
+  }
+
+  .page-shell--player .page-heading,
+  .storybook--player .storybook__heading {
+    width: 100%;
+    margin-block: 12px;
+    border-radius: 18px;
+  }
+
+  .page-shell--player .player-question,
+  .page-shell--player .player-level-state,
+  .page-shell--player .player-complete,
+  .page-shell--player .waiting-card {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .storybook--player .companion-preview {
+    grid-template-columns: minmax(130px, 46%) minmax(0, 54%);
+  }
+}
+
+@media (max-width: 420px) {
+  .page-shell--player,
+  .storybook--player {
+    padding-inline: 12px;
+  }
+
+  .page-shell--player .wordmark,
+  .storybook--player .storybook__brand {
+    font-size: .62rem;
+    letter-spacing: .035em;
+  }
+
+  .storybook--player .companion-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .storybook--player .companion-preview > .character-visual {
+    height: 240px;
+  }
+}
