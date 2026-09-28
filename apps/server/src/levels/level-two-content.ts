@@ -27,6 +27,8 @@ export const LEVEL_TWO_CHALLENGES = [
 ] as const satisfies readonly LevelTwoChallenge[];
 
 export const LEVEL_TWO_TIMING = { introMs: 4_000, answerMs: 30_000, cooldownMs: 2_000 } as const;
+export const LEVEL_TWO_MAX_SCORE = 100;
+export const LEVEL_TWO_HINT_PENALTY = 20;
 
 export function createKeywordPattern(keyword: string): string {
   return keyword.normalize("NFC").split(" ").map((word) => Array.from(word).map(() => "_").join("")).join(" ");

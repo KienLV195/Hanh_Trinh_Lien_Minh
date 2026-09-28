@@ -44,18 +44,18 @@ async function winRound(service: LobbyService, room: Awaited<ReturnType<LobbySer
 }
 
 describe("Level 2 two-round image reveal", () => {
-  it("starts Round 1 with 1000 points", async () => {
+  it("starts Round 1 with 100 points", async () => {
     const { room } = await startLevelTwo();
-    expect(room.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 0, openedTiles: [], currentReward: 1000, deadlineAt: 154_500 });
+    expect(room.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 0, openedTiles: [], currentReward: 100, deadlineAt: 154_500 });
   });
 
-  it("reveals one random hidden tile and decreases reward by 100", async () => {
+  it("reveals one random hidden tile and decreases reward by 20", async () => {
     const { service, room } = await startLevelTwo();
     const opened = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
     expect(opened.levelTwo?.openedTiles).toHaveLength(1);
     expect(opened.levelTwo?.openedTiles[0]).toBeGreaterThanOrEqual(0);
     expect(opened.levelTwo?.openedTiles[0]).toBeLessThan(4);
-    expect(opened.levelTwo?.currentReward).toBe(900);
+    expect(opened.levelTwo?.currentReward).toBe(80);
   });
 
   it("opens all four tiles without duplicates and stops when none remain", async () => {
@@ -63,7 +63,7 @@ describe("Level 2 two-round image reveal", () => {
     let updated = room;
     for (let count = 0; count < 4; count += 1) updated = await service.revealLevelTwoTile(updated.roomCode, updated.hostToken);
     expect(new Set(updated.levelTwo?.openedTiles)).toEqual(new Set([0, 1, 2, 3]));
-    expect(updated.levelTwo?.currentReward).toBe(600);
+    expect(updated.levelTwo?.currentReward).toBe(20);
     await expect(service.revealLevelTwoTile(updated.roomCode, updated.hostToken)).rejects.toMatchObject({ code: "TILE_ALREADY_OPEN" });
   });
 
@@ -134,7 +134,7 @@ describe("Level 2 two-round image reveal", () => {
     let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
     updated = await winRound(service, updated, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
-    expect(updated.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 1, openedTiles: [], currentReward: 1000, roundWinnerTeamId: null });
+    expect(updated.levelTwo).toMatchObject({ phase: "round_active", currentRoundIndex: 1, openedTiles: [], currentReward: 100, roundWinnerTeamId: null });
   });
 
   it("uses a different challenge and image in Round 2", async () => {
@@ -152,7 +152,7 @@ describe("Level 2 two-round image reveal", () => {
     let updated = await service.revealLevelTwoTile(room.roomCode, room.hostToken);
     updated = await winRound(service, updated, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
-    expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(900);
+    expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(80);
   });
 
   it("allows different teams to win the two rounds", async () => {
@@ -169,7 +169,7 @@ describe("Level 2 two-round image reveal", () => {
     let updated = await winRound(service, room, 0, 125_000);
     updated = await service.advanceLevelTwo(updated.roomCode, 126_000, true, updated.hostToken);
     updated = await winRound(service, updated, 0, 127_000);
-    expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(2000);
+    expect(updated.levelTwo?.baseScores[room.teams[0]!.teamId]).toBe(100);
   });
 
   it("creates Unicode-safe keyword patterns", () => {
@@ -204,6 +204,6 @@ describe("Level 2 two-round image reveal", () => {
     updated = await service.advanceLevelTwo(updated.roomCode, 128_000, true, updated.hostToken);
     const result = toLobbySnapshot(updated).levelTwo?.results?.[0];
     expect(updated.levelTwo).toMatchObject({ phase: "level_result", pieceAwarded: true });
-    expect(result).toMatchObject({ baseScore: 2000, multiplier: 2, finalScore: 4000 });
+    expect(result).toMatchObject({ baseScore: 100, multiplier: 2, finalScore: 200 });
   });
 });

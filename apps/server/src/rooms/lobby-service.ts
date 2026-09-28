@@ -25,6 +25,8 @@ import {
 import {
   createKeywordPattern,
   LEVEL_TWO_CHALLENGES,
+  LEVEL_TWO_HINT_PENALTY,
+  LEVEL_TWO_MAX_SCORE,
   LEVEL_TWO_TIMING,
   type LevelTwoChallenge
 } from "../levels/level-two-content.js";
@@ -826,7 +828,7 @@ export class LobbyService {
           deadlineAt: now + LEVEL_TWO_TIMING.introMs,
           answers: [],
           openedTiles: [],
-          currentReward: 1000,
+          currentReward: LEVEL_TWO_MAX_SCORE,
           roundWinnerTeamId: null,
           roundReward: null,
           roundResults: [],
@@ -890,7 +892,7 @@ export class LobbyService {
         levelTwo: {
           ...level,
           openedTiles,
-          currentReward: Math.max(0, 1000 - openedTiles.length * 100)
+          currentReward: Math.max(0, LEVEL_TWO_MAX_SCORE - openedTiles.length * LEVEL_TWO_HINT_PENALTY)
         }
       });
     });
@@ -973,9 +975,13 @@ export class LobbyService {
               }
         });
       }
+      const baseReward = Math.min(
+        level.currentReward,
+        Math.max(0, LEVEL_TWO_MAX_SCORE - (level.baseScores[team.teamId] ?? 0))
+      );
       const baseScores = {
         ...level.baseScores,
-        [team.teamId]: (level.baseScores[team.teamId] ?? 0) + level.currentReward
+        [team.teamId]: (level.baseScores[team.teamId] ?? 0) + baseReward
       };
       const round = (level.currentRoundIndex + 1) as 1 | 2;
       return bump({
@@ -988,10 +994,10 @@ export class LobbyService {
           answers,
           baseScores,
           roundWinnerTeamId: team.teamId,
-          roundReward: level.currentReward,
+          roundReward: baseReward,
           roundResults: [
             ...level.roundResults,
-            { round, winnerTeamId: team.teamId, baseReward: level.currentReward }
+            { round, winnerTeamId: team.teamId, baseReward }
           ]
         }
       });
@@ -1504,10 +1510,7 @@ export class LobbyService {
         Object.values(level.teamProgress).filter((progress) => progress.mode === "finished")
           .length + 1;
       const finishBonus = getLevelFiveFinishBonus(finishRank);
-      const knowledgeScore = normalizeBaseScoreForLevel(
-        level.baseScores[team.teamId] ?? 0,
-        "level-5"
-      );
+      const knowledgeScore = normalizeBaseScore(level.baseScores[team.teamId] ?? 0);
       const knowledgeMultiplier =
         team.characterId === getHomeCharacterId("level-5") ? (2 as const) : (1 as const);
       const teamProgress = {
@@ -2034,7 +2037,7 @@ function advanceLevelTwoState(state: RoomState, now: number): NonNullable<RoomSt
         phaseStartedAt: now,
         deadlineAt: now + LEVEL_TWO_TIMING.answerMs,
         openedTiles: [],
-        currentReward: 1000,
+        currentReward: LEVEL_TWO_MAX_SCORE,
         roundWinnerTeamId: null,
         roundReward: null,
         cooldownUntilByTeam: {}
@@ -2324,7 +2327,7 @@ function createResults(state: RoomState, baseScores: Record<string, number>, lev
   const totals = new Map(createScoreboard(state).map((team) => [team.teamId, team.totalScore]));
   return state.teams
     .map((team) => {
-      const baseScore = normalizeBaseScoreForLevel(baseScores[team.teamId] ?? 0, levelId);
+      const baseScore = normalizeBaseScore(baseScores[team.teamId] ?? 0);
       const multiplier = team.characterId === homeCharacterId ? (2 as const) : (1 as const);
       return {
         teamId: team.teamId,
@@ -2356,7 +2359,7 @@ function createLevelFiveResults(state: RoomState) {
       const progress = level.teamProgress[team.teamId];
       const baseScore =
         progress?.knowledgeScore ??
-        normalizeBaseScoreForLevel(level.baseScores[team.teamId] ?? 0, "level-5");
+        normalizeBaseScore(level.baseScores[team.teamId] ?? 0);
       const multiplier =
         progress?.knowledgeMultiplier ??
         (team.characterId === getHomeCharacterId("level-5") ? (2 as const) : (1 as const));
@@ -2430,7 +2433,7 @@ function createScoreboard(state: RoomState): TeamScorePublic[] {
     const levelResults = LEVEL_IDS.map((levelId) => {
       const completed = scoreStates[levelId].completed;
       const baseScore = completed
-        ? normalizeBaseScoreForLevel(scoreStates[levelId].baseScores[team.teamId] ?? 0, levelId)
+        ? normalizeBaseScore(scoreStates[levelId].baseScores[team.teamId] ?? 0)
         : 0;
       const multiplier =
         team.characterId === getHomeCharacterId(levelId) ? (2 as const) : (1 as const);
@@ -2474,11 +2477,6 @@ export function rankTeamScores<T extends { totalScore: number; joinIndex: number
 function normalizeBaseScore(value: number): number {
   if (!Number.isFinite(value)) return 0;
   return Math.min(MAX_LEVEL_BASE_SCORE, Math.max(0, Math.trunc(value)));
-}
-
-function normalizeBaseScoreForLevel(value: number, levelId: LevelId): number {
-  if (!Number.isFinite(value)) return 0;
-  return levelId === "level-2" ? Math.max(0, Math.trunc(value)) : normalizeBaseScore(value);
 }
 
 export function normalizeLevelTwoAnswer(answer: string): string {

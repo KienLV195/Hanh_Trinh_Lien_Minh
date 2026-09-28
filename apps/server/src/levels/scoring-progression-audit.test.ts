@@ -3,7 +3,7 @@ import { HOME_CHARACTER_BY_LEVEL, LEVEL_IDS, type CharacterId } from "@htlm/game
 import type { RoomState } from "../rooms/room-state-store.js";
 import { rankTeamScores, toLobbySnapshot } from "../rooms/lobby-service.js";
 import { LEVEL_ONE_QUESTIONS } from "./level-one-content.js";
-import { LEVEL_TWO_CHALLENGES } from "./level-two-content.js";
+import { LEVEL_TWO_MAX_SCORE } from "./level-two-content.js";
 import { LEVEL_THREE_ROUNDS } from "./level-three-content.js";
 import { LEVEL_FOUR_CHALLENGES } from "./level-four-content.js";
 import { LEVEL_FIVE_QUESTIONS } from "./level-five-content.js";
@@ -54,7 +54,7 @@ function perfectRoom(): RoomState {
       deadlineAt: null,
       answers: [],
       openedTiles: [],
-      currentReward: 1000,
+      currentReward: 100,
       roundWinnerTeamId: null,
       roundReward: null,
       roundResults: [],
@@ -143,14 +143,14 @@ describe("cross-level scoring and journey invariants", () => {
   it("keeps the configured maximum base score for every level", () => {
     const maxima = [
       LEVEL_ONE_QUESTIONS.reduce((sum, item) => sum + item.points, 0),
-      LEVEL_TWO_CHALLENGES.length * 1000,
+      LEVEL_TWO_MAX_SCORE,
       LEVEL_THREE_ROUNDS.reduce((sum, item) => sum + item.points, 0),
       LEVEL_FOUR_CHALLENGES.reduce((sum, item) => sum + item.points, 0),
       LEVEL_FIVE_QUESTIONS.reduce((sum, item) => sum + item.points, 0),
       LEVEL_SIX_CHALLENGES.reduce((sum, item) => sum + item.points, 0),
       LEVEL_SEVEN_ROUNDS.reduce((sum, item) => sum + item.points, 0)
     ];
-    expect(maxima).toEqual([100, 2000, 100, 100, 100, 100, 100]);
+    expect(maxima).toEqual([100, 100, 100, 100, 100, 100, 100]);
   });
 
   it("uses the canonical one-to-one home mapping", () => {

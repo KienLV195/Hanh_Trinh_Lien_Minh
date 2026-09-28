@@ -10,7 +10,7 @@ export const HOME_CHARACTER_BY_LEVEL = {
   "level-5": "nam", "level-6": "vy", "level-7": "mai"
 } as const satisfies Record<LevelId, CharacterId>;
 export const MAX_LEVEL_BASE_SCORE = 100;
-export const MAX_THEORETICAL_GAME_SCORE = 4_600;
+export const MAX_THEORETICAL_GAME_SCORE = 800;
 
 export function getHomeCharacterId(levelId: LevelId): CharacterId {
   return HOME_CHARACTER_BY_LEVEL[levelId];
