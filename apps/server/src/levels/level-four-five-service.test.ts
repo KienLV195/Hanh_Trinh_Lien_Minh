@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import type { CharacterId } from "@htlm/game-domain";
 import { InMemoryRoomStateStore } from "../rooms/in-memory-room-state-store.js";
 import { LobbyService, toLobbySnapshot } from "../rooms/lobby-service.js";
-import { LEVEL_FOUR_CHALLENGES } from "./level-four-content.js";
+import {
+  createShuffledRightItemOrder,
+  LEVEL_FOUR_CHALLENGES
+} from "./level-four-content.js";
 
 async function ready(characters: CharacterId[]) {
   const store = new InMemoryRoomStateStore();
@@ -36,6 +39,48 @@ async function finishFour(service: LobbyService, room: Awaited<ReturnType<LobbyS
 }
 
 describe("Level 4 authoritative matching", () => {
+  it("deranges the right column without changing correct pair ids", () => {
+    for (const challenge of LEVEL_FOUR_CHALLENGES) {
+      const original = challenge.rightItems.map((item) => item.id);
+      const order = createShuffledRightItemOrder(challenge, () => 0);
+      const correctByLeft = new Map(
+        challenge.solution.matches.map((pair) => [pair.leftId, pair.rightId])
+      );
+      expect(order).not.toEqual(original);
+      expect(new Set(order)).toEqual(new Set(original));
+      expect(
+        challenge.leftItems.every(
+          (leftItem, index) => correctByLeft.get(leftItem.id) !== order[index]
+        )
+      ).toBe(true);
+      expect(challenge.solution.matches).toEqual(
+        challenge.leftItems.map((leftItem, index) => ({
+          leftId: leftItem.id,
+          rightId: original[index]
+        }))
+      );
+    }
+  });
+
+  it("keeps the server-provided right-column order stable across snapshots and reconnect", async () => {
+    const { service, room } = await startFour(["nam"]);
+    const challenge = LEVEL_FOUR_CHALLENGES[0];
+    const firstOrder = toLobbySnapshot(room).levelFour?.currentChallenge?.rightItems.map(
+      (item) => item.id
+    );
+    expect(firstOrder).toEqual(room.levelFour?.rightItemOrderByChallenge[challenge.id]);
+    expect(firstOrder).not.toEqual(challenge.rightItems.map((item) => item.id));
+
+    const inspected = await service.inspect(room.roomCode);
+    expect(toLobbySnapshot(inspected).levelFour?.currentChallenge?.rightItems.map((item) => item.id)).toEqual(firstOrder);
+    const resumed = await service.resumePlayer(
+      room.roomCode,
+      room.teams[0]!.sessionToken,
+      "socket-reconnected-level-four"
+    );
+    expect(toLobbySnapshot(resumed).levelFour?.currentChallenge?.rightItems.map((item) => item.id)).toEqual(firstOrder);
+  });
+
   it("awards 25 for a fully correct match and hides the solution", async () => {
     const { service, room } = await startFour(["nam"]);
     expect(toLobbySnapshot(room).levelFour?.currentChallenge).not.toHaveProperty("solution");

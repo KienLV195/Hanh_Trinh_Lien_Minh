@@ -28,7 +28,11 @@ import {
   LEVEL_TWO_TIMING,
   type LevelTwoChallenge
 } from "../levels/level-two-content.js";
-import { LEVEL_FOUR_CHALLENGES, LEVEL_FOUR_TIMING } from "../levels/level-four-content.js";
+import {
+  createShuffledRightItemOrder,
+  LEVEL_FOUR_CHALLENGES,
+  LEVEL_FOUR_TIMING
+} from "../levels/level-four-content.js";
 import { LEVEL_FIVE_QUESTIONS, LEVEL_FIVE_TIMING } from "../levels/level-five-content.js";
 import {
   LEVEL_SIX_CHALLENGES,
@@ -349,7 +353,15 @@ export function toLobbySnapshot(state: RoomState): LobbySnapshot {
                 type: "matching",
                 prompt: levelFourChallenge.prompt,
                 leftItems: [...levelFourChallenge.leftItems],
-                rightItems: [...levelFourChallenge.rightItems],
+                rightItems: (
+                  levelFour.rightItemOrderByChallenge[levelFourChallenge.id] ??
+                  levelFourChallenge.rightItems.map((item) => item.id)
+                ).flatMap((rightItemId) => {
+                  const item = levelFourChallenge.rightItems.find(
+                    (candidate) => candidate.id === rightItemId
+                  );
+                  return item ? [item] : [];
+                }),
                 points: 25,
                 demo: true
               }
@@ -1159,6 +1171,12 @@ export class LobbyService {
           challengeIndex: 0,
           phaseStartedAt: now,
           deadlineAt: now + LEVEL_FOUR_TIMING.introMs,
+          rightItemOrderByChallenge: Object.fromEntries(
+            LEVEL_FOUR_CHALLENGES.map((challenge) => [
+              challenge.id,
+              createShuffledRightItemOrder(challenge)
+            ])
+          ),
           answers: [],
           baseScores,
           pieceAwarded: false

@@ -78,6 +78,7 @@ function perfectRoom(): RoomState {
       challengeIndex: 3,
       phaseStartedAt: 1,
       deadlineAt: null,
+      rightItemOrderByChallenge: {},
       answers: [],
       baseScores: { ...scores },
       pieceAwarded: true

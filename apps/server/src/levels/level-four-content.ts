@@ -55,4 +55,33 @@ export const LEVEL_FOUR_CHALLENGES = [
   ),
 ] as const satisfies readonly LevelFourChallenge[];
 
+export function createShuffledRightItemOrder(
+  current: LevelFourChallenge,
+  random: () => number = Math.random
+): string[] {
+  const original = current.rightItems.map((item) => item.id);
+  if (original.length < 2) return original;
+  const correctByLeftId = new Map(
+    current.solution.matches.map((pair) => [pair.leftId, pair.rightId])
+  );
+  const isUsefulOrder = (order: readonly string[]) =>
+    order.some((rightId, index) => rightId !== original[index]) &&
+    current.leftItems.every((leftItem, index) => correctByLeftId.get(leftItem.id) !== order[index]);
+
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const shuffled = [...original];
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(random() * (index + 1));
+      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex]!, shuffled[index]!];
+    }
+    if (isUsefulOrder(shuffled)) return shuffled;
+  }
+
+  for (let offset = 1; offset < original.length; offset += 1) {
+    const rotated = [...original.slice(offset), ...original.slice(0, offset)];
+    if (isUsefulOrder(rotated)) return rotated;
+  }
+  return [...original.slice(1), original[0]!];
+}
+
 export const LEVEL_FOUR_TIMING = { introMs: 4_500, answerMs: 30_000, revealMs: 3_000 } as const;

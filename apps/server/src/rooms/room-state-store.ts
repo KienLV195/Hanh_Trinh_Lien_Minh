@@ -75,6 +75,7 @@ export interface LevelFourState {
   challengeIndex: number;
   phaseStartedAt: number;
   deadlineAt: number | null;
+  rightItemOrderByChallenge: Record<string, string[]>;
   answers: Array<{
     teamId: TeamId;
     challengeId: string;

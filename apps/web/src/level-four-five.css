@@ -1,1 +1,100 @@
 .level-intro--market,.host-market-grid{background:linear-gradient(145deg,#fff2df,#ffd0b6)}.level-intro--festival,.host-race-grid{background:linear-gradient(145deg,#eff9d8,#cdebb0)}.home-advantage--coral{border-color:#e86f61}.home-advantage--orange{border-color:#ec8b2c}.host-market-grid,.host-race-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1rem;padding:1rem;border-radius:24px}.market-stage,.race-field{padding:1.2rem;border-radius:20px;background:#fffaf0}.market-awning{height:24px;background:repeating-linear-gradient(90deg,#e86f61 0 40px,#fff5df 40px 80px);border-radius:12px}.market-pairs{display:grid;grid-template-columns:1fr auto 1fr;gap:.7rem;align-items:center}.market-pairs div{display:grid;gap:.65rem}.market-pairs span,.pair-ribbons span{padding:.75rem;border-radius:12px;background:white;box-shadow:0 5px 14px #874b2720}.pair-ribbons{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;color:#b54f46}.race-field{position:relative;padding-top:4rem}.race-flag{position:absolute;right:1rem;top:.6rem;font-size:2rem}.race-flag small{display:block;font-size:.6rem}.race-lane{display:grid;grid-template-columns:110px 1fr 35px;gap:.7rem;align-items:center;margin:.8rem 0}.race-track{height:28px;border-radius:20px;background:repeating-linear-gradient(90deg,#daf0b8 0 18%,#b9dd8a 18% 20%);position:relative}.team-runner{position:absolute;top:2px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#ee8c32;color:white;font-weight:900;transition:left .7s ease}.mini-progress{display:flex;justify-content:space-between;color:#dd7624}.choice-grid{display:grid;gap:.7rem}.choice-grid button{display:flex;gap:.7rem;align-items:center;padding:1rem;border-radius:14px;border:1px solid #ddb98b;background:#fff}.choice-grid b{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#ed8b2f;color:#fff}@media(max-width:800px){.host-market-grid,.host-race-grid{grid-template-columns:1fr}.race-lane{grid-template-columns:80px 1fr 30px}}
+
+.level-four-matching {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(64px, 10vw, 150px) minmax(0, 1fr);
+  gap: 0;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.level-four-match-column {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.level-four-match-column--left { grid-column: 1; }
+.level-four-match-column--right { grid-column: 3; }
+
+.level-four-match-column > button,
+.level-four-match-column > div {
+  position: relative;
+  display: grid;
+  min-height: 72px;
+  place-items: center start;
+  width: 100%;
+  padding: 13px 18px;
+  border: 2px solid #d6b28a;
+  border-radius: 15px;
+  background: rgba(255, 250, 240, .96);
+  color: #3f4439;
+  box-shadow: 0 6px 16px rgba(101, 68, 39, .1);
+  font: inherit;
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.level-four-match-column > button { cursor: pointer; }
+.level-four-match-column > button:disabled.is-matched { opacity: 1; }
+.level-four-match-column > .is-selected { border-color: #756596; outline: 3px solid rgba(117,101,150,.2); }
+.level-four-match-column > .is-matched { border-color: #5c8455; background: #e5f1dd; }
+
+.level-four-match-column--left > :where(button, div)::after,
+.level-four-match-column--right > :where(button, div)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 3px solid #fffaf0;
+  border-radius: 50%;
+  background: #b85f50;
+  box-shadow: 0 0 0 1px #8f453a;
+  transform: translateY(-50%);
+}
+
+.level-four-match-column--left > :where(button, div)::after { right: -7px; }
+.level-four-match-column--right > :where(button, div)::before { left: -7px; }
+
+.level-four-match-lines {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.level-four-match-lines path {
+  fill: none;
+  stroke: hsl(calc(108 + var(--match-index) * 58) 42% 42%);
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 1px rgba(64, 55, 35, .16));
+}
+
+.matching-progress,
+.matching-reveal-label {
+  margin: 14px 0 0;
+  color: #725044;
+  font-weight: 850;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .level-four-matching {
+    grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+  }
+  .level-four-match-column > button,
+  .level-four-match-column > div {
+    min-height: 82px;
+    padding: 10px 12px;
+    font-size: .78rem;
+  }
+}
