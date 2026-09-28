@@ -21,6 +21,24 @@
 .level-two-scorebar span { justify-self: start; color: #415f3f; font-weight: 900; letter-spacing: .08em; }
 .level-two-scorebar strong { color: #294e39; font-size: clamp(1.8rem, 4vw, 3rem); font-variant-numeric: tabular-nums; }
 .level-two-scorebar small { justify-self: end; color: #65705e; font-weight: 800; }
+.host-keyword-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 12px 18px;
+  border: 1px solid rgba(169, 153, 105, .62);
+  border-radius: 16px;
+  background: rgba(255, 249, 228, .92);
+  color: #40583e;
+  font-size: clamp(.92rem, 1.7vw, 1.08rem);
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
+.host-keyword-hint span { flex: 0 0 auto; color: #806126; font-size: .76rem; font-weight: 900; letter-spacing: .12em; }
 .image-reveal-board {
   position: relative;
   width: min(100%, 1000px);
@@ -123,6 +141,7 @@
   .level-two-scorebar { grid-template-columns: 1fr 1fr; padding: 12px; }
   .level-two-scorebar strong { grid-column: 1 / -1; grid-row: 1; }
   .level-two-scorebar span, .level-two-scorebar small { grid-row: 2; }
+  .host-keyword-hint { align-items: stretch; flex-direction: column; gap: 5px; padding: 11px 14px; }
   .image-reveal-board { padding: 10px 24px; border-radius: 42px; }
   .image-reveal-board::before, .image-reveal-board::after { width: 36px; }
   .image-reveal-board::before { left: -19px; }
